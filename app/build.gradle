@@ -1,0 +1,74 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.cornershop.counterstest"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    // Core
+    implementation libs.kotlin
+    implementation libs.coreKtx
+    implementation libs.lifecycleExtensions
+    implementation libs.lifecycleLiveData
+    implementation libs.lifecycleViewModel
+    implementation libs.coroutinesAndroid
+
+    //UI
+    implementation libs.appCompat
+    implementation libs.material
+    implementation libs.constraintLayout
+    implementation libs.glide
+    implementation libs.glideCompiler
+    implementation libs.navigationFragment
+    implementation libs.navigationUi
+
+    //Remote data
+    implementation libs.retrofit
+    implementation libs.retrofitConverterGson
+    implementation libs.okHttp
+    implementation libs.okHttpLoggingInterceptor
+
+    //Local data
+    implementation libs.room
+    implementation libs.roomKtx
+    kapt libs.roomCompiler
+
+    //Test
+    testImplementation libs.junit
+    androidTestImplementation libs.kotlin
+    androidTestImplementation libs.junitAndroid
+
+    //DI
+    implementation libs.koin
+    implementation libs.koinArchitecture
+    implementation libs.koinViewModel
+}
