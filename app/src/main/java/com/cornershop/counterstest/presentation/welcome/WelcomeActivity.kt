@@ -1,10 +1,10 @@
-package com.cornershop.counterstest.presentation.ui.welcome
+package com.cornershop.counterstest.presentation.welcome
 
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.cornershop.counterstest.R
-import com.cornershop.counterstest.presentation.ui.main.MainActivity
+import com.cornershop.counterstest.presentation.main.MainActivity
 
 class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.presentation.ui.main
+package com.cornershop.counterstest.presentation.main
 
 import android.os.Bundle
 import android.view.LayoutInflater

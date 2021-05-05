@@ -1,7 +1,9 @@
 package com.cornershop.counterstest.data.di
 
 import com.cornershop.counterstest.BuildConfig
-import com.cornershop.counterstest.data.remote.CounterAPI
+import com.cornershop.counterstest.data.remote.api.CounterAPI
+import com.cornershop.counterstest.data.remote.datasource.CounterRemoteDataSource
+import com.cornershop.counterstest.data.remote.datasource.CounterRemoteDataSourceImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -19,7 +21,7 @@ val remoteDataSourceModule = module {
         )
     }
 
-//    factory<MoviesRemote> { MoviesRemoteImpl(moviesDatabaseAPI = get()) }
+    factory<CounterRemoteDataSource> { CounterRemoteDataSourceImpl(counterAPI = get()) }
 }
 
 private const val DEFAULT_TIMEOUT_SECONDS = 30L
