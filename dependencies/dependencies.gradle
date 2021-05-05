@@ -38,10 +38,11 @@ ext {
             junit                      : '4.13.2',
             junitAndroid               : '1.1.2',
             junitJupiter               : '5.7.1',
-            koin                       : '2.1.6',
+            koin                       : '2.2.2',
             koinArchitecture           : '0.9.3',
             kotlinTestJunit            : '1.4.32',
             lifecycle                  : '2.3.1',
+            lifecycleExtensions        : '2.2.0',
             lottieVersion              : '3.4.0',
             loadingButton              : '1.7',
             lottie                     : '3.6.1',
@@ -74,6 +75,7 @@ ext {
             testRunner                 : '1.2.0',
             timerx                     : '2.3.2',
             ucrop                      : '2.2.2',
+            viewBindingDelegate        : '1.4.4',
             wheelPicker                : '1.1.2',
             workRuntime                : '2.5.0'
     ]
@@ -138,7 +140,7 @@ ext {
             multidex                   : "androidx.multidex:multidex:$version.multidex",
             lifecycleCommonJava8       : "androidx.lifecycle:lifecycle-common-java8:$version.lifecycle",
             lifecycleCompiler          : "androidx.lifecycle:lifecycle-compiler:$version.lifecycle",
-            lifecycleExtensions        : "androidx.lifecycle:lifecycle-extensions:$version.lifecycle",
+            lifecycleExtensions        : "androidx.lifecycle:lifecycle-extensions:$version.lifecycleExtensions",
             lifecycleLiveData          : "androidx.lifecycle:lifecycle-livedata-ktx:$version.lifecycle",
             lifecycleProcess           : "androidx.lifecycle:lifecycle-process:$version.lifecycle",
             lifecycleRuntime           : "androidx.lifecycle:lifecycle-runtime-ktx:$version.lifecycle",
@@ -177,6 +179,7 @@ ext {
             testRunner                 : "androidx.test:runner:$version.testRunner",
             timerx                     : "com.arsvechkarev:timerx:$version.timerx",
             ucrop                      : "com.github.yalantis:ucrop:$version.ucrop",
+            viewBindingDelegate        : "com.github.kirich1409:viewbindingpropertydelegate:$version.viewBindingDelegate",
             wheelPicker                : "cn.aigestudio.wheelpicker:WheelPicker:$version.wheelPicker",
             workRuntime                : "androidx.work:work-runtime:$version.workRuntime"
     ]
