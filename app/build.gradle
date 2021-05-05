@@ -57,8 +57,9 @@ dependencies {
 
     //Remote data
     implementation libs.retrofit
-    implementation libs.retrofitConverterGson
+    implementation libs.retrofitConverterMoshi
     implementation libs.okHttp
+    implementation libs.moshi
     implementation libs.okHttpLoggingInterceptor
 
     //Local data

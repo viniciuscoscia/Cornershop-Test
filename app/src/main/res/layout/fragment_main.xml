@@ -4,20 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/double_grid"
+    android:paddingTop="@dimen/double_grid"
     tools:context=".presentation.ui.main.MainFragment">
 
     <SearchView
+        android:id="@+id/counter_search_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/double_grid"
-        android:layout_marginEnd="@dimen/double_grid"
         android:elevation="@dimen/half_grid"
-        android:queryHint="Search Counters"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/search_counters"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include layout="@layout/no_counters_yet" />
+    <TextView
+        android:id="@+id/items_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/double_grid"
+        android:textColor="@color/primary_text_color"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/counter_search_view"
+        tools:text="4 items" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/half_grid"
+        android:textColor="@color/secondary_text_color"
+        app:layout_constraintBottom_toBottomOf="@id/items_counter"
+        app:layout_constraintStart_toEndOf="@id/items_counter"
+        app:layout_constraintTop_toTopOf="@id/items_counter"
+        tools:text="17 times" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/counters_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/base_grid"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/items_counter"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <include
+        android:id="@+id/no_counters_layout"
+        layout="@layout/no_counters_yet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/large_grid"
+        android:background="@drawable/ic_add_counter_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

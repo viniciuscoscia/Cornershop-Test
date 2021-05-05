@@ -7,7 +7,7 @@
     <dimen name="double_grid">16dp</dimen>
     <dimen name="large_grid">24dp</dimen>
     <dimen name="extra_double_grid">32dp</dimen>
-    <dimen name="very_large_grid">36dp</dimen>
+    <dimen name="very_large_grid">40dp</dimen>
     <dimen name="huge_grid">48dp</dimen>
     <!-- Base grid -->
 
@@ -15,6 +15,6 @@
     <dimen name="margin_big_2">90dp</dimen>
     <dimen name="margin_big_1">60dp</dimen>
 
-    <dimen name="no_counters_yet_text_size">16sp</dimen>
-    <dimen name="no_counters_yet_quote_text_size">14sp</dimen>
+    <dimen name="no_counters_yet_text_size">18sp</dimen>
+    <dimen name="no_counters_yet_quote_text_size">15sp</dimen>
 </resources>
