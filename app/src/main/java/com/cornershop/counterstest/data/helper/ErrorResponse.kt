@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.data
+package com.cornershop.counterstest.data.helper
 
 data class ErrorResponse(
     val message: String,
