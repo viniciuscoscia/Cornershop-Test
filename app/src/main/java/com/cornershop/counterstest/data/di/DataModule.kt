@@ -1,5 +1,3 @@
-@file:JvmName("LocalDataModuleKt")
-
 package com.cornershop.counterstest.data.di
 
 import com.cornershop.counterstest.data.CounterRepository

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.cornershop.counterstest.presentation
 
 import android.app.Application

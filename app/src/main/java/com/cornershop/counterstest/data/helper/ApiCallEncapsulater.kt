@@ -1,5 +1,6 @@
 package com.cornershop.counterstest.data.helper
 
+import android.util.Log
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -15,6 +16,7 @@ suspend fun <T> safeApiCall(
         try {
             ResultWrapper.Success(apiCall.invoke())
         } catch (throwable: Throwable) {
+            Log.e("API CALL ERROR", "Error on API Call", throwable)
             when (throwable) {
                 is IOException -> ResultWrapper.NetworkError
                 is HttpException -> {

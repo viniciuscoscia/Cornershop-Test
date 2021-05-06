@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/double_grid"
     android:paddingTop="@dimen/double_grid"
-    tools:context=".presentation.ui.main.MainFragment">
+    tools:context=".presentation.main.MainFragment">
 
     <SearchView
         android:id="@+id/counter_search_view"

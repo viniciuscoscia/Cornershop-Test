@@ -4,6 +4,8 @@ import com.cornershop.counterstest.BuildConfig
 import com.cornershop.counterstest.data.remote.api.CounterAPI
 import com.cornershop.counterstest.data.remote.datasource.CounterRemoteDataSource
 import com.cornershop.counterstest.data.remote.datasource.CounterRemoteDataSourceImpl
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -38,8 +40,12 @@ fun providesOkHttpClient(): OkHttpClient {
 }
 
 inline fun <reified T> createWebService(okHttpClient: OkHttpClient, url: String): T {
+    val moshi = Moshi.Builder()
+        .addLast(KotlinJsonAdapterFactory())
+        .build()
+
     return Retrofit.Builder()
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .baseUrl(url)
         .client(okHttpClient)
         .build()
