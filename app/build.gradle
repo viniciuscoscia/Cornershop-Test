@@ -58,6 +58,7 @@ dependencies {
     implementation libs.glideCompiler
     implementation libs.navigationFragment
     implementation libs.navigationUi
+    implementation libs.viewBindingDelegate
 
     //Remote data
     implementation libs.retrofit

@@ -1,4 +1,7 @@
 package com.cornershop.counterstest.presentation.model
 
-class CounterUiModel {
-}
+data class CounterUiModel(
+    val id: String,
+    val title: String,
+    val count: Int
+)
