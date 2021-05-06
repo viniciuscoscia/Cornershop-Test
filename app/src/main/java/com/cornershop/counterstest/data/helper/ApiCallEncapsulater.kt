@@ -11,8 +11,7 @@ suspend fun <T> safeApiCall(
         try {
             ResultWrapper.Success(apiCall.invoke())
         } catch (throwable: Throwable) {
-            val errorEntity = GeneralErrorHandlerImpl.getError(throwable)
-            ResultWrapper.Error(errorEntity)
+            GeneralErrorHandlerImpl.getError(throwable)
         }
     }
 }

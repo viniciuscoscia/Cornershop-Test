@@ -5,28 +5,28 @@ import java.io.IOException
 import java.net.HttpURLConnection
 
 interface ErrorHandler {
-    fun getError(throwable: Throwable): ErrorEntity
+    fun getError(throwable: Throwable): ResultWrapper.ErrorEntity
 }
 
 object GeneralErrorHandlerImpl : ErrorHandler {
-    override fun getError(throwable: Throwable): ErrorEntity {
+    override fun getError(throwable: Throwable): ResultWrapper.ErrorEntity {
         return when (throwable) {
-            is IOException -> ErrorEntity.Network
+            is IOException -> ResultWrapper.ErrorEntity.Network
             is HttpException -> {
                 when (throwable.code()) {
-                    HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> ErrorEntity.Network
+                    HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> ResultWrapper.ErrorEntity.Network
 
-                    HttpURLConnection.HTTP_NOT_FOUND -> ErrorEntity.NotFound
+                    HttpURLConnection.HTTP_NOT_FOUND -> ResultWrapper.ErrorEntity.NotFound
 
-                    HttpURLConnection.HTTP_FORBIDDEN -> ErrorEntity.AccessDenied
+                    HttpURLConnection.HTTP_FORBIDDEN -> ResultWrapper.ErrorEntity.AccessDenied
 
                     HttpURLConnection.HTTP_UNAVAILABLE,
-                    HttpURLConnection.HTTP_INTERNAL_ERROR -> ErrorEntity.ServiceUnavailable
+                    HttpURLConnection.HTTP_INTERNAL_ERROR -> ResultWrapper.ErrorEntity.ServiceUnavailable
 
-                    else -> ErrorEntity.UnknownHttpException
+                    else -> ResultWrapper.ErrorEntity.UnknownHttpException
                 }
             }
-            else -> ErrorEntity.Unknown
+            else -> ResultWrapper.ErrorEntity.Unknown
         }
     }
 }
