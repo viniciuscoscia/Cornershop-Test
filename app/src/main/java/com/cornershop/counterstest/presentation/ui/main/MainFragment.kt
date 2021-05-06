@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.presentation.main
+package com.cornershop.counterstest.presentation.ui.main
 
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +9,8 @@ import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.FragmentMainBinding
 import com.cornershop.counterstest.presentation.commons.ViewState
 import com.cornershop.counterstest.presentation.commons.errorevent.ErrorEvent
+import com.cornershop.counterstest.presentation.commons.util.hide
+import com.cornershop.counterstest.presentation.commons.util.show
 import com.cornershop.counterstest.presentation.model.CounterUiModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,14 +25,16 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         viewModel.countersLiveData.observe(viewLifecycleOwner) { counters ->
             when (counters) {
                 is ViewState.Success -> {
+                    hideLoading()
                     Log.d("Vinicius", "Sucesso")
                     setupRecyclerView(counters.value)
                 }
                 is ViewState.Error -> {
+                    hideLoading()
                     Log.d("Vinicius", "Erro")
                     showError(counters.errorEvent)
                 }
-                ViewState.Loading -> {
+                is ViewState.Loading -> {
                     Log.d("Vinicius", "Loading")
                     showLoading()
                 }
@@ -38,8 +42,12 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
     }
 
-    private fun showLoading() {
+    private fun hideLoading() {
+        viewBinding.loading.root.hide()
+    }
 
+    private fun showLoading() {
+        viewBinding.loading.root.show()
     }
 
     private fun showError(errorEvent: ErrorEvent) {

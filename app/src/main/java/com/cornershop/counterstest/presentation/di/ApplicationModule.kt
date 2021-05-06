@@ -1,6 +1,6 @@
 package com.cornershop.counterstest.presentation.di
 
-import com.cornershop.counterstest.presentation.main.MainViewModel
+import com.cornershop.counterstest.presentation.ui.main.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

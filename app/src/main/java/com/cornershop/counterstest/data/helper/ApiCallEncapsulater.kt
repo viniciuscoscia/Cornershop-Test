@@ -11,7 +11,7 @@ suspend fun <T> safeApiCall(
         try {
             ResultWrapper.Success(apiCall.invoke())
         } catch (throwable: Throwable) {
-            GeneralErrorHandlerImpl.getError(throwable)
+            RemoteDataErrorHandlerImpl.getError(throwable)
         }
     }
 }

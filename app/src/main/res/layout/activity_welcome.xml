@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/container"
-    tools:context=".presentation.welcome.WelcomeActivity">
+    tools:context=".presentation.ui.welcome.WelcomeActivity">
 
     <ImageView
         android:id="@+id/imageLogo"

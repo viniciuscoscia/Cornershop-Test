@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.presentation.main
+package com.cornershop.counterstest.presentation.ui.main
 
 import android.content.Context
 import android.content.Intent

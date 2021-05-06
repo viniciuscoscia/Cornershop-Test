@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.presentation.main
+package com.cornershop.counterstest.presentation.ui.main
 
 import androidx.lifecycle.*
 import com.cornershop.counterstest.data.helper.ResultWrapper

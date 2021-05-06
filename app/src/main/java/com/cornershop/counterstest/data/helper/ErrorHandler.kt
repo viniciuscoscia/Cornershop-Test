@@ -8,7 +8,7 @@ interface ErrorHandler {
     fun getError(throwable: Throwable): ResultWrapper.ErrorEntity
 }
 
-object GeneralErrorHandlerImpl : ErrorHandler {
+object RemoteDataErrorHandlerImpl : ErrorHandler {
     override fun getError(throwable: Throwable): ResultWrapper.ErrorEntity {
         return when (throwable) {
             is IOException -> ResultWrapper.ErrorEntity.Network
