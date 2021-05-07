@@ -10,3 +10,11 @@ fun List<Counter>.toUIModel() = map { counter ->
         count = counter.count
     )
 }
+
+fun List<CounterUiModel>.toDomainModel() = map { uiModel ->
+    Counter(
+        id = uiModel.id,
+        title = uiModel.title,
+        count = uiModel.count
+    )
+}

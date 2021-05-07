@@ -6,6 +6,11 @@ import org.koin.dsl.module
 
 val applicationModule = module(override = true) {
     viewModel {
-        MainViewModel(countersUseCase = get())
+        MainViewModel(
+            getCountersUseCase = get(),
+            increaseCounterUseCase = get(),
+            decreaseCounterUseCase = get(),
+            deleteCounterUseCase = get()
+        )
     }
 }

@@ -9,6 +9,10 @@ import kotlinx.coroutines.Dispatchers
 
 interface CounterRemoteDataSource {
     suspend fun getCounters(): ResultWrapper<List<Counter>>
+    suspend fun addCounter(title: String): ResultWrapper<List<Counter>>
+    suspend fun increaseCounter(counterId: String): ResultWrapper<List<Counter>>
+    suspend fun decreaseCounter(counterId: String): ResultWrapper<List<Counter>>
+    suspend fun deleteCounter(counterId: String): ResultWrapper<List<Counter>>
 }
 
 class CounterRemoteDataSourceImpl(
@@ -16,5 +20,25 @@ class CounterRemoteDataSourceImpl(
 ) : CounterRemoteDataSource {
     override suspend fun getCounters(): ResultWrapper<List<Counter>> {
         return safeApiCall(Dispatchers.IO) { counterAPI.getCounters().toDomainEntity() }
+    }
+
+    override suspend fun addCounter(title: String): ResultWrapper<List<Counter>> {
+        return safeApiCall(Dispatchers.IO) { counterAPI.postAddCounter(title).toDomainEntity() }
+    }
+
+    override suspend fun increaseCounter(counterId: String): ResultWrapper<List<Counter>> {
+        return safeApiCall(Dispatchers.IO) {
+            counterAPI.postIncreaseCounter(counterId).toDomainEntity()
+        }
+    }
+
+    override suspend fun decreaseCounter(counterId: String): ResultWrapper<List<Counter>> {
+        return safeApiCall(Dispatchers.IO) {
+            counterAPI.postDecreaseCounter(counterId).toDomainEntity()
+        }
+    }
+
+    override suspend fun deleteCounter(counterId: String): ResultWrapper<List<Counter>> {
+        return safeApiCall(Dispatchers.IO) { counterAPI.deleteCounter(counterId).toDomainEntity() }
     }
 }

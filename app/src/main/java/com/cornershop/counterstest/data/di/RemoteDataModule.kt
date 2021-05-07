@@ -26,7 +26,7 @@ val remoteDataSourceModule = module {
     factory<CounterRemoteDataSource> { CounterRemoteDataSourceImpl(counterAPI = get()) }
 }
 
-private const val DEFAULT_TIMEOUT_SECONDS = 30L
+private const val DEFAULT_TIMEOUT_SECONDS = 5L
 
 fun providesOkHttpClient(): OkHttpClient {
     return OkHttpClient.Builder()

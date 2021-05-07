@@ -17,4 +17,6 @@
 
     <dimen name="no_counters_yet_text_size">18sp</dimen>
     <dimen name="no_counters_yet_quote_text_size">15sp</dimen>
+    <dimen name="counter_layout_height">50dp</dimen>
+    <dimen name="counter_items_text_size">16sp</dimen>
 </resources>

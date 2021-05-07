@@ -5,28 +5,28 @@ import java.io.IOException
 import java.net.HttpURLConnection
 
 interface ErrorHandler {
-    fun getError(throwable: Throwable): ResultWrapper.ErrorEntity
+    fun getError(throwable: Throwable): ResultWrapper.NetworkErrorEntity
 }
 
 object RemoteDataErrorHandlerImpl : ErrorHandler {
-    override fun getError(throwable: Throwable): ResultWrapper.ErrorEntity {
+    override fun getError(throwable: Throwable): ResultWrapper.NetworkErrorEntity {
         return when (throwable) {
-            is IOException -> ResultWrapper.ErrorEntity.Network
+            is IOException -> ResultWrapper.NetworkErrorEntity.Timeout
             is HttpException -> {
                 when (throwable.code()) {
-                    HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> ResultWrapper.ErrorEntity.Network
+                    HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> ResultWrapper.NetworkErrorEntity.Timeout
 
-                    HttpURLConnection.HTTP_NOT_FOUND -> ResultWrapper.ErrorEntity.NotFound
+                    HttpURLConnection.HTTP_NOT_FOUND -> ResultWrapper.NetworkErrorEntity.NotFound
 
-                    HttpURLConnection.HTTP_FORBIDDEN -> ResultWrapper.ErrorEntity.AccessDenied
+                    HttpURLConnection.HTTP_FORBIDDEN -> ResultWrapper.NetworkErrorEntity.AccessDenied
 
                     HttpURLConnection.HTTP_UNAVAILABLE,
-                    HttpURLConnection.HTTP_INTERNAL_ERROR -> ResultWrapper.ErrorEntity.ServiceUnavailable
+                    HttpURLConnection.HTTP_INTERNAL_ERROR -> ResultWrapper.NetworkErrorEntity.ServiceUnavailable
 
-                    else -> ResultWrapper.ErrorEntity.UnknownHttpException
+                    else -> ResultWrapper.NetworkErrorEntity.UnknownHttpException
                 }
             }
-            else -> ResultWrapper.ErrorEntity.Unknown
+            else -> ResultWrapper.NetworkErrorEntity.Unknown
         }
     }
 }

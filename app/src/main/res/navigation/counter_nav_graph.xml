@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.cornershop.counterstest.presentation.ui.main.MainFragment"
+        android:name="com.cornershop.counterstest.presentation.ui.main.CountersFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
 </navigation>
