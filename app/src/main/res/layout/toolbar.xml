@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
-        android:id="@+id/loadingProgressBar"
+        android:id="@+id/loading_progress_bar"
         style="@style/Theme.CountersNormal"
         android:layout_width="@dimen/toolbar_loading_size"
         android:layout_height="@dimen/toolbar_loading_size"

@@ -46,17 +46,20 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 
     private fun setupLiveData() {
         viewModel.countersLiveData.observe(viewLifecycleOwner) { counterUiModel ->
+            if ((counterUiModel is ViewState.Loading).not()) hideLoading()
+
             when (counterUiModel) {
+                is ViewState.Loading -> {
+                    showLoading()
+                }
                 is ViewState.Success -> {
-                    hideLoading()
                     setupCountersLayoutInfo(counterUiModel.value)
                 }
                 is ViewState.Error -> {
-                    hideLoading()
                     checkErrorEvent(counterUiModel.errorEvent)
                 }
-                is ViewState.Loading -> {
-                    showLoading()
+                is ViewState.SuccessEmpty -> {
+                    onNoCountersOrError()
                 }
             }
         }

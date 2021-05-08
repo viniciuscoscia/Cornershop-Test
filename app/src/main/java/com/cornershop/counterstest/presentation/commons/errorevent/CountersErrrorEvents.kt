@@ -7,11 +7,20 @@ import com.cornershop.counterstest.presentation.model.CounterUiModel
 sealed interface CountersErrorEvents : ErrorEvent {
     object GetCountersNetworkUnavailable : CountersErrorEvents
 
+    object CreateCounterErrorEvent : DialogErrorEvent {
+        @StringRes
+        override val errorTitle: Int = R.string.error_creating_counter_title
+
+        @StringRes
+        override val errorMessage: Int = R.string.connection_error_description
+    }
+
     data class IncreaseCounterNetworkUnavailable(
         override val counterUiModel: CounterUiModel
     ) : IncreaseDecreaseCounterErrorEvent(counterUiModel) {
         @StringRes
         override val errorTitle: Int = R.string.error_updating_counter_title
+
         @StringRes
         override val errorMessage: Int = R.string.connection_error_description
 
