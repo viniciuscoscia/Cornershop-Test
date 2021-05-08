@@ -24,5 +24,6 @@ fun Context?.showGenericErrorDialog() {
         setPositiveButton(R.string.ok) { dialog, _ ->
             dialog.dismiss()
         }
+        show()
     }
 }

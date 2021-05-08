@@ -22,6 +22,6 @@
     <dimen name="error_title_text_size">22sp</dimen>
     <dimen name="error_message_text_size">18sp</dimen>
     <dimen name="error_retry_text_size">17sp</dimen>
-    <dimen name="toolbar_fragment_name_text_size">20sp</dimen>
+    <dimen name="toolbar_fragment_name_text_size">21sp</dimen>
     <dimen name="toolbar_loading_size">20dp</dimen>
 </resources>

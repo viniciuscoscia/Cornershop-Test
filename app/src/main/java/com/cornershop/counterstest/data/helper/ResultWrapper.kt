@@ -4,6 +4,7 @@ sealed interface ResultWrapper<out T> {
     data class Success<out T>(val value: T) : ResultWrapper<T>
     sealed interface NetworkErrorEntity : ResultWrapper<Nothing> {
         object Timeout : NetworkErrorEntity
+        object NoInternetConnection : NetworkErrorEntity
         object NotFound : NetworkErrorEntity
         object AccessDenied : NetworkErrorEntity
         object ServiceUnavailable : NetworkErrorEntity

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
@@ -31,11 +32,16 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 
     private fun setupListeners() = with(viewBinding) {
         addCounterButton.setOnClickListener {
-
+            navigateToAddCounter()
         }
         couldNotLoadCountersLayout.retry.setOnClickListener {
+            couldNotLoadCountersLayout.root.hide()
             viewModel.getCounters()
         }
+    }
+
+    private fun navigateToAddCounter() {
+        findNavController().navigate(CountersFragmentDirections.actionMainFragmentToCreateCounterFragment())
     }
 
     private fun setupLiveData() {
@@ -105,6 +111,7 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
                 onRetryClicked()
                 dialog.dismiss()
             }
+            show()
         }
     }
 

@@ -35,7 +35,8 @@ class CountersViewModel(
             is ResultWrapper.Success -> {
                 ViewState.Success(buildCountersUiModel(useCaseResult.value))
             }
-            is ResultWrapper.NetworkErrorEntity.Timeout -> {
+            is ResultWrapper.NetworkErrorEntity.Timeout,
+            is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
                 ViewState.Error(CountersErrorEvents.GetCountersNetworkUnavailable)
             }
             else -> {
@@ -54,7 +55,7 @@ class CountersViewModel(
                 is ResultWrapper.Success -> {
                     ViewState.Success(buildCountersUiModel(useCaseResult.value))
                 }
-                is ResultWrapper.NetworkErrorEntity.Timeout -> {
+                is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
                     val errorEvent: ErrorEvent =
                         CountersErrorEvents.IncreaseCounterNetworkUnavailable(counterUiModel)
                     ViewState.Error(errorEvent)
@@ -75,7 +76,7 @@ class CountersViewModel(
                 is ResultWrapper.Success -> {
                     ViewState.Success(buildCountersUiModel(useCaseResult.value))
                 }
-                is ResultWrapper.NetworkErrorEntity.Timeout -> {
+                is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
                     val errorEvent: ErrorEvent =
                         CountersErrorEvents.DecreaseCounterNetworkUnavailable(counterUiModel)
                     ViewState.Error(errorEvent)
@@ -96,7 +97,7 @@ class CountersViewModel(
                 is ResultWrapper.Success -> {
                     ViewState.Success(buildCountersUiModel(useCaseResult.value))
                 }
-                is ResultWrapper.NetworkErrorEntity.Timeout -> {
+                is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
                     ViewState.Error(CountersErrorEvents.DeleteCounterNetworkUnavailable)
                 }
                 else -> {

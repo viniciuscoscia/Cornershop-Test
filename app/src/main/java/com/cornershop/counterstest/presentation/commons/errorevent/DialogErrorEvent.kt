@@ -21,5 +21,6 @@ fun DialogErrorEvent.showErrorDialog(context: Context) {
         setPositiveButton(R.string.ok) { dialog, _ ->
             dialog.dismiss()
         }
+        show()
     }
 }

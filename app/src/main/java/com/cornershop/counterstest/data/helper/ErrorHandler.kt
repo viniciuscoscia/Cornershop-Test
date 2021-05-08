@@ -2,6 +2,7 @@ package com.cornershop.counterstest.data.helper
 
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.ConnectException
 import java.net.HttpURLConnection
 
 interface ErrorHandler {
@@ -11,6 +12,7 @@ interface ErrorHandler {
 object RemoteDataErrorHandlerImpl : ErrorHandler {
     override fun getError(throwable: Throwable): ResultWrapper.NetworkErrorEntity {
         return when (throwable) {
+            is ConnectException -> ResultWrapper.NetworkErrorEntity.NoInternetConnection
             is IOException -> ResultWrapper.NetworkErrorEntity.Timeout
             is HttpException -> {
                 when (throwable.code()) {
