@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.presentation.ui.main
+package com.cornershop.counterstest.presentation.ui.main.counters
 
 import androidx.lifecycle.*
 import com.cornershop.counterstest.data.helper.ResultWrapper
@@ -17,7 +17,7 @@ import com.cornershop.counterstest.presentation.model.CounterUiModel
 import com.cornershop.counterstest.presentation.model.CountersFragmentUiModel
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class CountersViewModel(
     private val getCountersUseCase: GetCountersUseCase,
     private val increaseCounterUseCase: IncreaseCounterUseCase,
     private val decreaseCounterUseCase: DecreaseCounterUseCase,

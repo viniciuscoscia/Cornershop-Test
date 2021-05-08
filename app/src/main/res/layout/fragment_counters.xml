@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/double_grid"
     android:paddingTop="@dimen/double_grid"
-    tools:context=".presentation.ui.main.CountersFragment">
+    tools:context=".presentation.ui.main.counters.CountersFragment">
 
     <SearchView
         android:id="@+id/counter_search_view"
@@ -66,6 +66,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/add_counter_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/large_grid"
@@ -77,6 +78,17 @@
     <include
         android:id="@+id/loading"
         layout="@layout/loading"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/could_not_load_counters_layout"
+        layout="@layout/could_not_load_counters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

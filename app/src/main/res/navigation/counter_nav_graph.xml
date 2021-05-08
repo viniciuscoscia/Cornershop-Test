@@ -7,7 +7,16 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.cornershop.counterstest.presentation.ui.main.CountersFragment"
+        android:name="com.cornershop.counterstest.presentation.ui.main.counters.CountersFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_counters">
+        <action
+            android:id="@+id/action_mainFragment_to_createCounterFragment"
+            app:destination="@id/createCounterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createCounterFragment"
+        android:name="com.cornershop.counterstest.presentation.ui.main.createconter.CreateCounterFragment"
+        android:label="create_counter_fragment"
+        tools:layout="@layout/create_counter_fragment" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.presentation.ui.main
+package com.cornershop.counterstest.presentation.ui.main.counters
 
 import android.os.Bundle
 import android.view.View
@@ -6,7 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cornershop.counterstest.R
-import com.cornershop.counterstest.databinding.FragmentMainBinding
+import com.cornershop.counterstest.databinding.FragmentCountersBinding
 import com.cornershop.counterstest.presentation.commons.ViewState
 import com.cornershop.counterstest.presentation.commons.errorevent.*
 import com.cornershop.counterstest.presentation.commons.util.hide
@@ -16,15 +16,29 @@ import com.cornershop.counterstest.presentation.model.CounterUiModel
 import com.cornershop.counterstest.presentation.model.CountersFragmentUiModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CountersFragment : Fragment(R.layout.fragment_main) {
-    private val viewModel: MainViewModel by viewModel()
-    private val viewBinding: FragmentMainBinding by viewBinding() //Using lib to avoid ViewBinding Memory Leak
+class CountersFragment : Fragment(R.layout.fragment_counters) {
+    private val viewModel: CountersViewModel by viewModel()
+    private val viewBinding: FragmentCountersBinding by viewBinding()
     private var countersAdapter: CountersAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(viewModel)
 
+        setupListeners()
+        setupLiveData()
+    }
+
+    private fun setupListeners() = with(viewBinding) {
+        addCounterButton.setOnClickListener {
+
+        }
+        couldNotLoadCountersLayout.retry.setOnClickListener {
+            viewModel.getCounters()
+        }
+    }
+
+    private fun setupLiveData() {
         viewModel.countersLiveData.observe(viewLifecycleOwner) { counterUiModel ->
             when (counterUiModel) {
                 is ViewState.Success -> {
@@ -42,16 +56,11 @@ class CountersFragment : Fragment(R.layout.fragment_main) {
         }
     }
 
-    private fun hideLoading() {
-        viewBinding.loading.root.hide()
-    }
-
-    private fun showLoading() {
-        viewBinding.loading.root.show()
-    }
-
     private fun checkErrorEvent(errorEvent: ErrorEvent) {
         when (errorEvent) {
+            is CountersErrorEvents.GetCountersNetworkUnavailable -> {
+                showCouldNotGetCountersError()
+            }
             is CountersErrorEvents.IncreaseCounterNetworkUnavailable -> {
                 errorEvent.showIncreaseDecreaseErrorDialog {
                     viewModel.onIncreaseCounter(errorEvent.counterUiModel)
@@ -67,10 +76,43 @@ class CountersFragment : Fragment(R.layout.fragment_main) {
                     errorEvent.showErrorDialog(this)
                 }
             }
-            else -> {
+            is CommonErrorEvents.Generic -> {
                 context?.showGenericErrorDialog()
             }
         }
+    }
+
+    private fun IncreaseDecreaseCounterErrorEvent.showIncreaseDecreaseErrorDialog(
+        onRetryClicked: () -> Unit
+    ) {
+        val context = context ?: return
+
+        with(AlertDialog.Builder(context)) {
+            setTitle(
+                context.getString(
+                    errorTitle,
+                    counterUiModel.title,
+                    getCalculatedCounterValue()
+                )
+            )
+            setMessage(
+                context.getString(errorMessage)
+            )
+            setPositiveButton(positiveButton) { dialog, _ ->
+                dialog.dismiss()
+            }
+            setNegativeButton(negativeButton) { dialog, _ ->
+                onRetryClicked()
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun showCouldNotGetCountersError() = with(viewBinding) {
+        showCountersLayout(show = false)
+        noCountersLayout.root.hide()
+
+        couldNotLoadCountersLayout.root.show()
     }
 
     private fun setupCountersLayoutInfo(uiModel: CountersFragmentUiModel) {
@@ -82,6 +124,11 @@ class CountersFragment : Fragment(R.layout.fragment_main) {
         }
 
         with(viewBinding) {
+            showCountersLayout(show = true)
+            couldNotLoadCountersLayout.root.hide()
+            noCountersLayout.root.hide()
+
+
             itemsCounter.text = getString(R.string.n_items, uiModel.itemsCount)
             timesCounter.text = getString(R.string.n_times, uiModel.timesCount)
         }
@@ -109,35 +156,23 @@ class CountersFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun onNoCountersOrError() = with(viewBinding) {
-        itemsCounter.hide()
-        timesCounter.hide()
-        countersRecyclerView.hide()
+        showCountersLayout(show = false)
+        couldNotLoadCountersLayout.root.hide()
+
         noCountersLayout.root.show()
     }
 
-    private fun IncreaseDecreaseCounterErrorEvent.showIncreaseDecreaseErrorDialog(
-        onRetryClicked: () -> Unit
-    ) {
-        val context = context ?: return
+    private fun showCountersLayout(show: Boolean) = with(viewBinding) {
+        val counterViews = listOf(itemsCounter, timesCounter, countersRecyclerView)
 
-        with(AlertDialog.Builder(context)) {
-            setTitle(
-                context.getString(
-                    errorTitle,
-                    counterUiModel.title,
-                    getCalculatedCounterValue()
-                )
-            )
-            setMessage(
-                context.getString(errorMessage)
-            )
-            setPositiveButton(positiveButton) { dialog, _ ->
-                dialog.dismiss()
-            }
-            setNegativeButton(negativeButton) { dialog, _ ->
-                onRetryClicked()
-                dialog.dismiss()
-            }
-        }
+        counterViews.forEach { view -> if (show) view.show() else view.hide() }
+    }
+
+    private fun hideLoading() {
+        viewBinding.loading.root.hide()
+    }
+
+    private fun showLoading() {
+        viewBinding.loading.root.show()
     }
 }
