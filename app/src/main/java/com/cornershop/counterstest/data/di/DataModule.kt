@@ -1,14 +1,22 @@
 package com.cornershop.counterstest.data.di
 
-import com.cornershop.counterstest.data.CounterRepository
-import com.cornershop.counterstest.data.CounterRepositoryImpl
+import com.cornershop.counterstest.data.repository.CounterRepository
+import com.cornershop.counterstest.data.repository.CounterRepositoryImpl
+import com.cornershop.counterstest.data.repository.ExamplesRepository
+import com.cornershop.counterstest.data.repository.ExamplesRepositoryImpl
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    factory<CounterRepository> {
+    single<CounterRepository> {
         CounterRepositoryImpl(
             remoteDataSource = get()
+        )
+    }
+
+    single<ExamplesRepository> {
+        ExamplesRepositoryImpl(
+            examplesLocalDataSource = get()
         )
     }
 }

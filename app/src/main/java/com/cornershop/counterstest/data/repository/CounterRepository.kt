@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.data
+package com.cornershop.counterstest.data.repository
 
 import com.cornershop.counterstest.data.helper.ResultWrapper
 import com.cornershop.counterstest.data.remote.datasource.CounterRemoteDataSource
@@ -13,7 +13,7 @@ interface CounterRepository {
 }
 
 class CounterRepositoryImpl(
-    private val remoteDataSource: CounterRemoteDataSource
+    private val remoteDataSource: CounterRemoteDataSource,
 ) : CounterRepository {
     override suspend fun getCounters(): ResultWrapper<List<Counter>> {
         return remoteDataSource.getCounters()
