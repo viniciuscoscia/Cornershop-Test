@@ -1,6 +1,7 @@
 package com.cornershop.counterstest.domain.di
 
-import com.cornershop.counterstest.domain.usecases.*
+import com.cornershop.counterstest.domain.usecases.GetExamplesUseCase
+import com.cornershop.counterstest.domain.usecases.counter.*
 import org.koin.dsl.module
 
 val domainModule = module {

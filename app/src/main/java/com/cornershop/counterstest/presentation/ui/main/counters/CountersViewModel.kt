@@ -3,10 +3,10 @@ package com.cornershop.counterstest.presentation.ui.main.counters
 import androidx.lifecycle.*
 import com.cornershop.counterstest.data.helper.ResultWrapper
 import com.cornershop.counterstest.domain.entities.Counter
-import com.cornershop.counterstest.domain.usecases.DecreaseCounterUseCase
-import com.cornershop.counterstest.domain.usecases.DeleteCounterUseCase
-import com.cornershop.counterstest.domain.usecases.GetCountersUseCase
-import com.cornershop.counterstest.domain.usecases.IncreaseCounterUseCase
+import com.cornershop.counterstest.domain.usecases.counter.DecreaseCounterUseCase
+import com.cornershop.counterstest.domain.usecases.counter.DeleteCounterUseCase
+import com.cornershop.counterstest.domain.usecases.counter.GetCountersUseCase
+import com.cornershop.counterstest.domain.usecases.counter.IncreaseCounterUseCase
 import com.cornershop.counterstest.presentation.commons.BaseViewModel
 import com.cornershop.counterstest.presentation.commons.ViewState
 import com.cornershop.counterstest.presentation.commons.errorevent.CommonErrorEvents

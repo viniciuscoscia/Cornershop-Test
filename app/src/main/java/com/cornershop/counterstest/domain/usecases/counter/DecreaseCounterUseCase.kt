@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.domain.usecases
+package com.cornershop.counterstest.domain.usecases.counter
 
 import com.cornershop.counterstest.data.helper.ResultWrapper
 import com.cornershop.counterstest.data.repository.CounterRepository
