@@ -63,7 +63,7 @@ ext {
             recyclerView               : '1.0.0',
             recyclerViewFlexibleDivider: '1.4.0',
             retrofit                   : '2.9.0',
-            room                       : '2.2.6',
+            room                       : '2.3.0',
             rxAndroid                  : '2.0.1',
             rxJava                     : '2.0.4',
             rxKotlin                   : '2.3.0',
@@ -76,7 +76,7 @@ ext {
             testRunner                 : '1.2.0',
             timerx                     : '2.3.2',
             ucrop                      : '2.2.2',
-            viewBindingDelegate        : '1.4.4',
+            viewBindingDelegate        : '1.4.6',
             wheelPicker                : '1.1.2',
             workRuntime                : '2.5.0'
     ]

@@ -22,12 +22,10 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            debuggable = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "COUNTER_BASE_URL", "\"http://10.0.2.2:3000/\""
         }
         debug {
-            debuggable = true
             buildConfigField "String", "COUNTER_BASE_URL", "\"http://10.0.2.2:3000/\""
         }
     }
@@ -39,14 +37,12 @@ android {
         jvmTarget = '1.8'
     }
 
-    viewBinding {
-        enabled = true
-    }
+    buildFeatures.viewBinding = true
 }
 
 dependencies {
     // Core
-    implementation libs.kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.0"
     implementation libs.coreKtx
     implementation libs.lifecycleExtensions
     implementation libs.lifecycleLiveData
@@ -71,7 +67,7 @@ dependencies {
     //Local data
     implementation libs.room
     implementation libs.roomKtx
-    testImplementation libs.roomTesting
+//    testImplementation libs.roomTesting
     kapt libs.roomCompiler
 
     //DI

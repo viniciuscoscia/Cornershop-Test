@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/createCounterFragment"
         android:name="com.cornershop.counterstest.presentation.ui.main.createconter.CreateCounterFragment"
-        android:label="create_counter_fragment"
+        android:label="@string/create_counter"
         tools:layout="@layout/create_counter_fragment">
         <argument
             android:name="example"
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/counterExamplesFragment"
         android:name="com.cornershop.counterstest.presentation.ui.main.counterexamples.CounterExamplesFragment"
-        android:label="fragment_counter_examples"
+        android:label="@string/examples"
         tools:layout="@layout/fragment_counter_examples">
         <action
             android:id="@+id/action_counterExamplesFragment_to_createCounterFragment"

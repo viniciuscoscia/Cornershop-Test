@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "counters")
-data class CounterEntity(
+data class CounterDatabaseEntity(
     @PrimaryKey val id: String,
     @ColumnInfo val title: String,
     @ColumnInfo val count: Int

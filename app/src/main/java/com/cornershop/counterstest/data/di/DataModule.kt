@@ -10,7 +10,8 @@ import org.koin.dsl.module
 val repositoryModule = module {
     single<CounterRepository> {
         CounterRepositoryImpl(
-            remoteDataSource = get()
+            remoteDataSource = get(),
+            localDataSource = get()
         )
     }
 

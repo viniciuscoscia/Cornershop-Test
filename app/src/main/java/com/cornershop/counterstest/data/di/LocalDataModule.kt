@@ -1,5 +1,7 @@
 package com.cornershop.counterstest.data.di
 
+import com.cornershop.counterstest.data.local.dao.CounterDAO
+import com.cornershop.counterstest.data.local.database.CountersDatabase
 import com.cornershop.counterstest.data.local.datasource.CountersLocalDataSource
 import com.cornershop.counterstest.data.local.datasource.CountersLocalDataSourceImpl
 import com.cornershop.counterstest.data.local.datasource.ExamplesLocalDataSource
@@ -13,6 +15,10 @@ val localDataModule = module {
     }
 
     single<CountersLocalDataSource> {
-        CountersLocalDataSourceImpl()
+        CountersLocalDataSourceImpl(countersDao = get())
+    }
+
+    single<CounterDAO> {
+        CountersDatabase.createDatabase(context = androidApplication())
     }
 }
