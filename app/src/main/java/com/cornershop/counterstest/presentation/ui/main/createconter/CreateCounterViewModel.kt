@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.cornershop.counterstest.data.helper.ResultWrapper
 import com.cornershop.counterstest.domain.usecases.CreateCounterUseCase
 import com.cornershop.counterstest.presentation.commons.ViewState
+import com.cornershop.counterstest.presentation.commons.errorevent.CommonErrorEvents
 import com.cornershop.counterstest.presentation.commons.errorevent.CountersErrorEvents
 import kotlinx.coroutines.launch
 
@@ -23,8 +24,12 @@ class CreateCounterViewModel(
                 is ResultWrapper.Success -> {
                     ViewState.SuccessEmpty
                 }
-                is ResultWrapper.NetworkErrorEntity -> {
+                is ResultWrapper.NetworkErrorEntity.Timeout,
+                is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
                     ViewState.Error(CountersErrorEvents.CreateCounterErrorEvent)
+                }
+                else -> {
+                    ViewState.Error(CommonErrorEvents.Generic)
                 }
             }
 

@@ -3,20 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/counter_nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/countersFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
+        android:id="@+id/countersFragment"
         android:name="com.cornershop.counterstest.presentation.ui.main.counters.CountersFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_counters">
         <action
-            android:id="@+id/action_mainFragment_to_createCounterFragment"
+            android:id="@+id/action_countersFragment_to_createCounterFragment"
             app:destination="@id/createCounterFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/createCounterFragment"
         android:name="com.cornershop.counterstest.presentation.ui.main.createconter.CreateCounterFragment"
         android:label="create_counter_fragment"
-        tools:layout="@layout/create_counter_fragment" />
+        tools:layout="@layout/create_counter_fragment">
+        <action
+            android:id="@+id/action_createCounterFragment_to_countersFragment"
+            app:destination="@id/countersFragment" />
+    </fragment>
 </navigation>

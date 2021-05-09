@@ -2,7 +2,9 @@ package com.cornershop.counterstest.presentation.ui.main.counters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.CountersLayoutBinding
 import com.cornershop.counterstest.presentation.model.CounterUiModel
 
@@ -28,6 +30,9 @@ class CountersAdapter(
         with(holder.viewBinding) {
             counterTitleTextView.text = counter.title
             counterQuantityTextView.text = counter.count.toString()
+
+            setupDecrementCounterButton(holder, counter)
+
             increaseCounterButton.setOnClickListener {
                 onIncreaseCounterClicked(counter)
             }
@@ -35,6 +40,24 @@ class CountersAdapter(
                 onDecrementCounterClicked(counter)
             }
         }
+    }
+
+    private fun CountersLayoutBinding.setupDecrementCounterButton(
+        holder: ViewHolder,
+        counter: CounterUiModel
+    ) {
+        decrementCounterButton.setImageDrawable(
+            ContextCompat.getDrawable(
+                holder.itemView.context,
+                if (counter.count < 1) {
+                    decrementCounterButton.isEnabled = false
+                    R.drawable.ic_disabled_minus
+                } else {
+                    decrementCounterButton.isEnabled = true
+                    R.drawable.ic_minus_orange
+                }
+            )
+        )
     }
 
     override fun getItemCount() = counters.size

@@ -22,11 +22,13 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            debuggable = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "COUNTER_BASE_URL", "\"https://10.0.2.2:3000\""
+            buildConfigField "String", "COUNTER_BASE_URL", "\"http://10.0.2.2:3000/\""
         }
         debug {
-            buildConfigField "String", "COUNTER_BASE_URL", "\"https://10.0.2.2:3000\""
+            debuggable = true
+            buildConfigField "String", "COUNTER_BASE_URL", "\"http://10.0.2.2:3000/\""
         }
     }
     compileOptions {

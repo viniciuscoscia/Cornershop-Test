@@ -5,9 +5,9 @@ import com.cornershop.counterstest.data.helper.ResultWrapper
 import com.cornershop.counterstest.domain.entities.Counter
 
 class CreateCounterUseCase(
-    private val counterRepository: CounterRepository
+    private val repository: CounterRepository
 ) {
     suspend operator fun invoke(title: String): ResultWrapper<List<Counter>> {
-        return counterRepository.addCounter(title)
+        return repository.addCounter(title)
     }
 }

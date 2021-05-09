@@ -8,6 +8,9 @@ val domainModule = module {
         GetCountersUseCase(repository = get())
     }
     factory {
+        CreateCounterUseCase(repository = get())
+    }
+    factory {
         IncreaseCounterUseCase(repository = get())
     }
     factory {

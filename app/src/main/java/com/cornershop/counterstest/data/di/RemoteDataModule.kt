@@ -33,6 +33,15 @@ fun providesOkHttpClient(): OkHttpClient {
         .addInterceptor(HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         })
+        .addInterceptor { chain ->
+            var request = chain.request()
+
+            request = request.newBuilder()
+                .addHeader("Content-Type", "application/json")
+                .build()
+
+            chain.proceed(request)
+        }
         .connectTimeout(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .readTimeout(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .writeTimeout(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS)

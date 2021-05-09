@@ -6,40 +6,41 @@
     android:layout_height="@dimen/counter_layout_height">
 
     <TextView
-        android:id="@+id/counterTitleTextView"
+        android:id="@+id/counter_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/primary_text_color"
+        android:textSize="@dimen/counter_title_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Cups of coffee" />
 
     <ImageButton
-        android:id="@+id/decrementCounterButton"
+        android:id="@+id/decrement_counter_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/base_grid"
+        android:layout_height="@dimen/decrement_counter_height"
+        android:layout_marginEnd="@dimen/double_grid"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_minus_orange"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/counterQuantityTextView"
+        app:layout_constraintEnd_toStartOf="@id/counter_quantity_text_view"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/counterQuantityTextView"
+        android:id="@+id/counter_quantity_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/base_grid"
+        android:layout_marginEnd="@dimen/double_grid"
         android:textColor="@color/primary_text_color"
         android:textSize="@dimen/counter_items_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/increaseCounterButton"
+        app:layout_constraintEnd_toStartOf="@id/increase_counter_button"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="5" />
 
     <ImageButton
-        android:id="@+id/increaseCounterButton"
+        android:id="@+id/increase_counter_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"

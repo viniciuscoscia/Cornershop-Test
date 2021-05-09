@@ -26,6 +26,7 @@
         android:layout_marginTop="@dimen/double_grid"
         android:textColor="@color/primary_text_color"
         android:textStyle="bold"
+        android:textSize="@dimen/counter_item_times_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/counter_search_view"
         tools:text="4 items" />
@@ -34,7 +35,8 @@
         android:id="@+id/times_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/half_grid"
+        android:layout_marginStart="@dimen/base_grid"
+        android:textSize="@dimen/counter_item_times_text_size"
         android:textColor="@color/secondary_text_color"
         app:layout_constraintBottom_toBottomOf="@id/items_counter"
         app:layout_constraintStart_toEndOf="@id/items_counter"
@@ -46,13 +48,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/base_grid"
-        tools:listitem="@layout/counters_layout"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/items_counter"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:listitem="@layout/counters_layout" />
 
     <include
         android:id="@+id/no_counters_layout"

@@ -3,6 +3,8 @@ package com.cornershop.counterstest.data.remote.datasource
 import com.cornershop.counterstest.data.helper.ResultWrapper
 import com.cornershop.counterstest.data.helper.safeApiCall
 import com.cornershop.counterstest.data.remote.api.CounterAPI
+import com.cornershop.counterstest.data.remote.entity.AddCounterRequest
+import com.cornershop.counterstest.data.remote.entity.GeneralCounterRequest
 import com.cornershop.counterstest.data.remote.toDomainEntity
 import com.cornershop.counterstest.domain.entities.Counter
 import kotlinx.coroutines.Dispatchers
@@ -23,22 +25,26 @@ class CounterRemoteDataSourceImpl(
     }
 
     override suspend fun addCounter(title: String): ResultWrapper<List<Counter>> {
-        return safeApiCall(Dispatchers.IO) { counterAPI.postAddCounter(title).toDomainEntity() }
+        return safeApiCall(Dispatchers.IO) {
+            counterAPI.postAddCounter(AddCounterRequest(title)).toDomainEntity()
+        }
     }
 
     override suspend fun increaseCounter(counterId: String): ResultWrapper<List<Counter>> {
         return safeApiCall(Dispatchers.IO) {
-            counterAPI.postIncreaseCounter(counterId).toDomainEntity()
+            counterAPI.postIncreaseCounter(GeneralCounterRequest(counterId)).toDomainEntity()
         }
     }
 
     override suspend fun decreaseCounter(counterId: String): ResultWrapper<List<Counter>> {
         return safeApiCall(Dispatchers.IO) {
-            counterAPI.postDecreaseCounter(counterId).toDomainEntity()
+            counterAPI.postDecreaseCounter(GeneralCounterRequest(counterId)).toDomainEntity()
         }
     }
 
     override suspend fun deleteCounter(counterId: String): ResultWrapper<List<Counter>> {
-        return safeApiCall(Dispatchers.IO) { counterAPI.deleteCounter(counterId).toDomainEntity() }
+        return safeApiCall(Dispatchers.IO) {
+            counterAPI.deleteCounter(GeneralCounterRequest(counterId)).toDomainEntity()
+        }
     }
 }

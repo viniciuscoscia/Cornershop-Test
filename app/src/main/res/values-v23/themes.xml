@@ -15,6 +15,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorSecondary</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
     </style>
 
     <style name="Theme.CountersWelcome" parent="Theme.CountersNormal">
