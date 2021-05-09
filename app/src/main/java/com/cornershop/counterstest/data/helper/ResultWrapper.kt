@@ -11,4 +11,5 @@ sealed interface ResultWrapper<out T> {
         object Unknown : NetworkErrorEntity
         object UnknownHttpException : NetworkErrorEntity
     }
+    object DatabaseError : ResultWrapper<Nothing>
 }

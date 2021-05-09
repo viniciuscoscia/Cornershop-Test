@@ -71,7 +71,7 @@ dependencies {
     //Local data
     implementation libs.room
     implementation libs.roomKtx
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation libs.roomTesting
     kapt libs.roomCompiler
 
     //DI
