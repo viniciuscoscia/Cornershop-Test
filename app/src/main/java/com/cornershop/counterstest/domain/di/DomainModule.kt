@@ -20,6 +20,9 @@ val domainModule = module {
         DeleteCounterUseCase(repository = get())
     }
     factory {
+        GetExamplesUseCase(repository = get())
+    }
+    factory {
         ShareCounterUseCase()
     }
 }

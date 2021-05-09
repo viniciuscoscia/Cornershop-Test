@@ -42,7 +42,9 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 
     private fun navigateToAddCounter() {
         findNavController()
-            .navigate(CountersFragmentDirections.actionCountersFragmentToCreateCounterFragment())
+            .navigate(
+                CountersFragmentDirections.actionCountersFragmentToCreateCounterFragment(null)
+            )
     }
 
     private fun setupLiveData() {

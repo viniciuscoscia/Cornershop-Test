@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.CreateCounterFragmentBinding
@@ -30,6 +31,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class CreateCounterFragment : Fragment(R.layout.create_counter_fragment) {
     private val viewModel: CreateCounterViewModel by viewModel()
     private val viewBinding: CreateCounterFragmentBinding by viewBinding()
+    private val args: CreateCounterFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -128,6 +130,10 @@ class CreateCounterFragment : Fragment(R.layout.create_counter_fragment) {
         counterNameEditText.addTextChangedListener {
             counterNameInputLayout.error = null
         }
+
+        args.example?.run {
+            counterNameEditText.setText(this)
+        }
     }
 
     private fun showLoading() = with(viewBinding.toolbar) {
@@ -148,7 +154,10 @@ class CreateCounterFragment : Fragment(R.layout.create_counter_fragment) {
         builder.append(unClickableSpan)
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
-                // TODO start new fragment
+                findNavController()
+                    .navigate(
+                        CreateCounterFragmentDirections.actionCreateCounterFragmentToCounterExamplesFragment()
+                    )
             }
 
             override fun updateDrawState(ds: TextPaint) {

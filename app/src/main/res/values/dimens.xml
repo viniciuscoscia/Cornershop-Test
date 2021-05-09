@@ -27,4 +27,5 @@
     <dimen name="counter_title_text_size">18sp</dimen>
     <dimen name="counter_item_times_text_size">18sp</dimen>
     <dimen name="decrement_counter_height">20dp</dimen>
+    <dimen name="example_description_text_size">15sp</dimen>
 </resources>

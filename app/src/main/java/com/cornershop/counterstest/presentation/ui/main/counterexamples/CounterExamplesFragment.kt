@@ -3,6 +3,7 @@ package com.cornershop.counterstest.presentation.ui.main.counterexamples
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.FragmentCounterExamplesBinding
@@ -18,6 +19,19 @@ class CounterExamplesFragment : Fragment(R.layout.fragment_counter_examples) {
     }
 
     private fun setupLivedataObserver() {
-        viewModel
+        viewModel.examplesLiveData.observe(viewLifecycleOwner) { examples ->
+            viewBinding.examplesRecyclerView.adapter = ExamplesAdapter(examples) { example ->
+                onExampleClicked(example)
+            }
+        }
+    }
+
+    private fun onExampleClicked(example: String) {
+        findNavController()
+            .navigate(
+                CounterExamplesFragmentDirections.actionCounterExamplesFragmentToCreateCounterFragment(
+                    example
+                )
+            )
     }
 }
