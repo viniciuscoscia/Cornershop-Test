@@ -8,11 +8,12 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.CountersLayoutBinding
+import com.cornershop.counterstest.presentation.commons.util.visibilityByBoolean
 import com.cornershop.counterstest.presentation.model.CounterUiModel
 
 class CountersAdapter(
 	private val onIncreaseCounterClicked: (counter: CounterUiModel) -> Unit,
-	private val onDecrementCounterClicked: (counter: CounterUiModel) -> Unit
+	private val onDecrementCounterClicked: (counter: CounterUiModel) -> Unit,
 ) : RecyclerView.Adapter<CountersAdapter.ViewHolder>() {
 
 	init {
@@ -27,6 +28,8 @@ class CountersAdapter(
 
 	var tracker: SelectionTracker<CounterUiModel>? = null
 
+	private var isSelectionMode = false
+
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val viewBinding =
 			CountersLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -36,25 +39,10 @@ class CountersAdapter(
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 		if (tracker == null) return
 
-		val isSelected = tracker!!.isSelected(counters[position])
-		val counter = counters[position]
-
-		with(holder) {
-			viewBinding.counterTitleTextView.text = counter.title
-			viewBinding.counterQuantityTextView.text = counter.count.toString()
-
-			viewBinding.setupDecrementCounterButton(holder, counter)
-
-			viewBinding.increaseCounterButton.setOnClickListener {
-				onIncreaseCounterClicked(counter)
-			}
-
-			viewBinding.decrementCounterButton.setOnClickListener {
-				onDecrementCounterClicked(counter)
-			}
-
-			itemView.isActivated = isSelected
-		}
+		holder.bind(
+			counter = counters[position],
+			isSelected = tracker!!.isSelected(counters[position])
+		)
 	}
 
 	private fun CountersLayoutBinding.setupDecrementCounterButton(
@@ -79,20 +67,53 @@ class CountersAdapter(
 		return position.toLong()
 	}
 
+	fun enterSelectionMode() {
+		if (isSelectionMode.not()) {
+			isSelectionMode = true
+			notifyDataSetChanged()
+		}
+	}
+
 	override fun getItemCount() = counters.size
 
 	fun getItem(position: Int) = counters[position]
 	fun getPosition(id: String) = counters.indexOfFirst { it.id == id }
 
 	inner class ViewHolder(
-		val viewBinding: CountersLayoutBinding
+		private val viewBinding: CountersLayoutBinding
 	) : RecyclerView.ViewHolder(viewBinding.root) {
 		fun getItemDetails(): ItemDetailsLookup.ItemDetails<CounterUiModel> {
 			return object : ItemDetailsLookup.ItemDetails<CounterUiModel>() {
 				override fun getPosition() = absoluteAdapterPosition
-
 				override fun getSelectionKey() = counters[position]
 			}
+		}
+
+		fun bind(counter: CounterUiModel, isSelected: Boolean) {
+			viewBinding.counterTitleTextView.text = counter.title
+			viewBinding.counterQuantityTextView.text = counter.count.toString()
+
+			viewBinding.setupDecrementCounterButton(this, counter)
+
+			viewBinding.increaseCounterButton.setOnClickListener {
+				onIncreaseCounterClicked(counter)
+			}
+
+			viewBinding.decrementCounterButton.setOnClickListener {
+				onDecrementCounterClicked(counter)
+			}
+
+			itemView.isActivated = isSelected
+
+			showCheckedItem(isSelected)
+		}
+
+		private fun showCheckedItem(isSelected: Boolean) = with(viewBinding) {
+			increaseCounterButton.visibilityByBoolean(isSelected.not())
+			decrementCounterButton.visibilityByBoolean(isSelected.not())
+			counterQuantityTextView.visibilityByBoolean(isSelected.not())
+
+			checkImage.visibilityByBoolean(isSelected)
 		}
 	}
 }

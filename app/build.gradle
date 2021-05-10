@@ -80,6 +80,5 @@ dependencies {
 
     //Test
     testImplementation libs.junit
-    androidTestImplementation libs.kotlin
     androidTestImplementation libs.junitAndroid
 }

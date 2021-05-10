@@ -1,6 +1,7 @@
 package com.cornershop.counterstest.presentation.ui.main.counters
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -177,14 +178,14 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 			CounterItemLookup(viewBinding.countersRecyclerView),
 			StorageStrategy.createParcelableStorage(CounterUiModel::class.java)
 		).withSelectionPredicate(
-			SelectionPredicates.createSelectAnything()
+			SelectionPredicates.createSelectSingleAnything()
 		).build()
 
 		tracker?.addObserver(object : SelectionTracker.SelectionObserver<CounterUiModel>() {
 			override fun onSelectionChanged() {
 				tracker?.run {
 					super.onSelectionChanged()
-					val a = selection
+					Log.d("Vinicius", "Teste")
 				}
 			}
 		})

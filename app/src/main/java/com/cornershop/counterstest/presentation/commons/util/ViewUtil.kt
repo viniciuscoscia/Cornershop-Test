@@ -10,20 +10,28 @@ fun View.show() {
 }
 
 fun View.hide() {
-    visibility = View.GONE
+	visibility = View.GONE
 }
 
 fun View.invisible() {
-    visibility = View.INVISIBLE
+	visibility = View.INVISIBLE
+}
+
+fun View.visibilityByBoolean(visible: Boolean) {
+	if (visible) {
+		show()
+	} else {
+		hide()
+	}
 }
 
 fun Context?.showGenericErrorDialog() {
-    if (this == null) return
-    with(AlertDialog.Builder(this)) {
-        setMessage(R.string.generic_error_description)
-        setPositiveButton(R.string.ok) { dialog, _ ->
-            dialog.dismiss()
-        }
-        show()
-    }
+	if (this == null) return
+	with(AlertDialog.Builder(this)) {
+		setMessage(R.string.generic_error_description)
+		setPositiveButton(R.string.ok) { dialog, _ ->
+			dialog.dismiss()
+		}
+		show()
+	}
 }
