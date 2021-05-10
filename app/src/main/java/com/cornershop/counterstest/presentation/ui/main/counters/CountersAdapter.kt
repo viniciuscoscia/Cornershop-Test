@@ -9,12 +9,13 @@ import com.cornershop.counterstest.databinding.CountersLayoutBinding
 import com.cornershop.counterstest.presentation.model.CounterUiModel
 
 class CountersAdapter(
-    private var counters: List<CounterUiModel>,
     private val onIncreaseCounterClicked: (counterId: CounterUiModel) -> Unit,
     private val onDecrementCounterClicked: (counter: CounterUiModel) -> Unit
 ) : RecyclerView.Adapter<CountersAdapter.ViewHolder>() {
 
-    fun updateCounters(counters: List<CounterUiModel>) {
+    private var counters: List<CounterUiModel> = emptyList()
+
+    fun setCounters(counters: List<CounterUiModel>) {
         this.counters = counters
         notifyDataSetChanged()
     }
