@@ -5,6 +5,9 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StorageStrategy
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
@@ -20,17 +23,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class CountersFragment : Fragment(R.layout.fragment_counters) {
 	private val viewModel: CountersViewModel by viewModel()
 	private val viewBinding: FragmentCountersBinding by viewBinding()
-	private val selectedCounters: ArrayList<CounterUiModel> = arrayListOf()
+	private var tracker: SelectionTracker<CounterUiModel>? = null
+
 	private val countersAdapter: CountersAdapter by lazy {
 		CountersAdapter(
 			onIncreaseCounterClicked = { counterUiModel ->
 				viewModel.onIncreaseCounter(counterUiModel)
 			}, onDecrementCounterClicked = { counterUiModel ->
 				viewModel.onDecreaseCounter(counterUiModel)
-			}, onItemClickListener = { counterUiModel ->
-				onRecyclerViewItemSelected(counterUiModel)
-			}, onLongClickListener = { counterUiModel ->
-				onRecyclerViewItemLongClick(counterUiModel)
 			}
 		)
 	}
@@ -164,21 +164,32 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 	private fun setRecyclerviewItems(counters: List<CounterUiModel>) = with(viewBinding) {
 		if (countersRecyclerView.adapter == null) {
 			viewBinding.countersRecyclerView.adapter = countersAdapter
+			setupTracker()
 		}
 		countersAdapter.setCounters(counters)
 	}
 
-	private fun onRecyclerViewItemSelected(counterUiModel: CounterUiModel) {
-		if (countersAdapter.isMultiSelecting) {
+	private fun setupTracker() {
+		tracker = SelectionTracker.Builder(
+			COUNTERS_SELECTION_ID,
+			viewBinding.countersRecyclerView,
+			CounterItemKeyProvider(countersAdapter),
+			CounterItemLookup(viewBinding.countersRecyclerView),
+			StorageStrategy.createParcelableStorage(CounterUiModel::class.java)
+		).withSelectionPredicate(
+			SelectionPredicates.createSelectAnything()
+		).build()
 
-		}
-	}
+		tracker?.addObserver(object : SelectionTracker.SelectionObserver<CounterUiModel>() {
+			override fun onSelectionChanged() {
+				tracker?.run {
+					super.onSelectionChanged()
+					val a = selection
+				}
+			}
+		})
 
-	private fun onRecyclerViewItemLongClick(counterUiModel: CounterUiModel) {
-		if (countersAdapter.isMultiSelecting) return
-
-		countersAdapter.isMultiSelecting = true
-		selectedCounters.add(counterUiModel.apply { isSelected = true })
+		countersAdapter.tracker = tracker
 	}
 
 	private fun onNoCountersOrError() = with(viewBinding) {
@@ -200,5 +211,9 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 
 	private fun showLoading() {
 		viewBinding.loading.root.show()
+	}
+
+	companion object {
+		private const val COUNTERS_SELECTION_ID = "COUNTERS_SELECTION_ID"
 	}
 }

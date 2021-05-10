@@ -5,6 +5,7 @@
     <color name="colorAccent">@color/orange</color>
 
     <color name="orange">#FF9500</color>
+    <color name="orange_20_opacity">#33FF9500</color>
     <color name="gray">#888B90</color>
     <color name="light_gray">#DCDCDF</color>
 

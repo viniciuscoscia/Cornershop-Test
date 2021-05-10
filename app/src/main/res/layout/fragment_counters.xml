@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/double_grid"
     android:paddingTop="@dimen/double_grid"
     tools:context=".presentation.ui.main.counters.CountersFragment">
 
@@ -27,6 +26,7 @@
         android:textColor="@color/primary_text_color"
         android:textStyle="bold"
         android:textSize="@dimen/counter_item_times_text_size"
+        android:layout_marginStart="@dimen/double_grid"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/counter_search_view"
         tools:text="4 items" />
@@ -48,12 +48,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/base_grid"
+        android:layout_marginHorizontal="@dimen/base_grid"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/items_counter"
-        app:layout_constraintVertical_bias="1.0"
         tools:listitem="@layout/counters_layout" />
 
     <include
