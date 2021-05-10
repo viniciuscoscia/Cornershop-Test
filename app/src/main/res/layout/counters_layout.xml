@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/counter_layout_height">
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/counter_layout_height">
 
     <TextView
         android:id="@+id/counter_title_text_view"

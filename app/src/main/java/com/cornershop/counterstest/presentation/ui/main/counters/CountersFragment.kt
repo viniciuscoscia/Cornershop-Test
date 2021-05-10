@@ -20,7 +20,20 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class CountersFragment : Fragment(R.layout.fragment_counters) {
 	private val viewModel: CountersViewModel by viewModel()
 	private val viewBinding: FragmentCountersBinding by viewBinding()
-	private var countersAdapter: CountersAdapter? = null
+	private val selectedCounters: ArrayList<CounterUiModel> = arrayListOf()
+	private val countersAdapter: CountersAdapter by lazy {
+		CountersAdapter(
+			onIncreaseCounterClicked = { counterUiModel ->
+				viewModel.onIncreaseCounter(counterUiModel)
+			}, onDecrementCounterClicked = { counterUiModel ->
+				viewModel.onDecreaseCounter(counterUiModel)
+			}, onItemClickListener = { counterUiModel ->
+				onRecyclerViewItemSelected(counterUiModel)
+			}, onLongClickListener = { counterUiModel ->
+				onRecyclerViewItemLongClick(counterUiModel)
+			}
+		)
+	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
@@ -141,31 +154,31 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 			couldNotLoadCountersLayout.root.hide()
 			noCountersLayout.root.hide()
 
-
 			itemsCounter.text = getString(R.string.n_items, uiModel.itemsCount)
 			timesCounter.text = getString(R.string.n_times, uiModel.timesCount)
 		}
 
-		checkAdapter(counters)
+		setRecyclerviewItems(counters)
 	}
 
-	private fun checkAdapter(counters: List<CounterUiModel>) = with(viewBinding) {
-		if (countersAdapter == null || countersRecyclerView.adapter == null) {
-			setupAdapterOnRecyclerView()
+	private fun setRecyclerviewItems(counters: List<CounterUiModel>) = with(viewBinding) {
+		if (countersRecyclerView.adapter == null) {
+			viewBinding.countersRecyclerView.adapter = countersAdapter
 		}
-		countersAdapter!!.setCounters(counters)
+		countersAdapter.setCounters(counters)
 	}
 
-	private fun setupAdapterOnRecyclerView() {
-		countersAdapter = CountersAdapter(
-			onIncreaseCounterClicked = { counterUiModel ->
-				viewModel.onIncreaseCounter(counterUiModel)
-			}, onDecrementCounterClicked = { counterUiModel ->
-				viewModel.onDecreaseCounter(counterUiModel)
-			}
-		)
+	private fun onRecyclerViewItemSelected(counterUiModel: CounterUiModel) {
+		if (countersAdapter.isMultiSelecting) {
 
-		viewBinding.countersRecyclerView.adapter = countersAdapter
+		}
+	}
+
+	private fun onRecyclerViewItemLongClick(counterUiModel: CounterUiModel) {
+		if (countersAdapter.isMultiSelecting) return
+
+		countersAdapter.isMultiSelecting = true
+		selectedCounters.add(counterUiModel.apply { isSelected = true })
 	}
 
 	private fun onNoCountersOrError() = with(viewBinding) {
