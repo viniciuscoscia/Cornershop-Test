@@ -29,4 +29,10 @@
     <dimen name="decrement_counter_height">20dp</dimen>
     <dimen name="example_description_text_size">15sp</dimen>
     <dimen name="counter_count_width">25dp</dimen>
+    <dimen name="search_bar_height">50dp</dimen>
+    <dimen name="search_bar_corner_radius">12dp</dimen>
+    <dimen name="search_bar_cardview_elevation">1dp</dimen>
+    <dimen name="icons_size">18dp</dimen>
+    <dimen name="no_results_text_size">20sp</dimen>
+    <dimen name="multi_selection_text_size">18sp</dimen>
 </resources>

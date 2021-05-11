@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/countersFragment"
         android:name="com.cornershop.counterstest.presentation.ui.main.counters.CountersFragment"
-        android:label="fragment_main"
         tools:layout="@layout/fragment_counters">
         <action
             android:id="@+id/action_countersFragment_to_createCounterFragment"

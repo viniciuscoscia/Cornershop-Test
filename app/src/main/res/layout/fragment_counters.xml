@@ -4,24 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/double_grid"
     tools:context=".presentation.ui.main.counters.CountersFragment">
 
-    <Button
-        android:id="@+id/delete"
-        android:layout_width="wrap_content"
+    <com.cornershop.counterstest.presentation.customsearchview.CustomSearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/counter_search_view" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <SearchView
-        android:id="@+id/counter_search_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:elevation="@dimen/half_grid"
-        android:iconifiedByDefault="false"
-        android:queryHint="@string/search_counters"
+    <include
+        android:id="@+id/multi_selection_bar"
+        layout="@layout/counters_fragment_multi_selection_bar"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +32,7 @@
         android:textSize="@dimen/counter_item_times_text_size"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/counter_search_view"
+        app:layout_constraintTop_toBottomOf="@id/search_view"
         tools:text="4 items" />
 
     <TextView
@@ -105,6 +101,30 @@
         layout="@layout/could_not_load_counters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/dark_effect_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/init_search_view_color"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_view" />
+
+    <TextView
+        android:id="@+id/no_results_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_results"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="@dimen/no_results_text_size"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

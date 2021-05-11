@@ -14,13 +14,16 @@ val domainModule = module {
     factory {
         IncreaseCounterUseCase(repository = get())
     }
-    factory {
-        DecreaseCounterUseCase(repository = get())
-    }
-    factory {
-        DeleteCounterUseCase(repository = get())
-    }
-    factory {
-        GetExamplesUseCase(repository = get())
-    }
+	factory {
+		DecreaseCounterUseCase(repository = get())
+	}
+	factory {
+		DeleteCounterUseCase(repository = get())
+	}
+	factory {
+		GetExamplesUseCase(repository = get())
+	}
+	factory {
+		SearchCountersByTextUseCase(repository = get())
+	}
 }

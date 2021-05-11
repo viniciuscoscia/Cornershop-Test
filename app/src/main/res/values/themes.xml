@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.CountersNormal" parent="Theme.MaterialComponents.DayNight">
+    <style name="Theme.CountersNormal" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/orange</item>
         <item name="colorOnPrimary">@color/black</item>
@@ -15,28 +15,5 @@
         <item name="android:statusBarColor">?attr/colorSecondary</item>
         <item name="textInputStyle">@style/TextInputLayout</item>
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
-    </style>
-
-    <style name="Theme.CountersWelcome" parent="Theme.CountersNormal">
-        <item name="android:windowBackground">@color/welcome_background</item>
-    </style>
-
-    <style name="TextInputLayout">
-        <item name="colorControlNormal">@color/orange</item>
-        <item name="colorControlActivated">@color/orange</item>
-        <item name="colorControlHighlight">@color/orange</item>
-    </style>
-
-    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
-    </style>
-
-    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/orange</item>
-    </style>
-
-    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/orange</item>
     </style>
 </resources>

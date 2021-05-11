@@ -3,10 +3,7 @@ package com.cornershop.counterstest.presentation.ui.main.counters
 import androidx.lifecycle.*
 import com.cornershop.counterstest.data.helper.ResultWrapper
 import com.cornershop.counterstest.domain.entities.Counter
-import com.cornershop.counterstest.domain.usecases.counter.DecreaseCounterUseCase
-import com.cornershop.counterstest.domain.usecases.counter.DeleteCounterUseCase
-import com.cornershop.counterstest.domain.usecases.counter.GetCountersUseCase
-import com.cornershop.counterstest.domain.usecases.counter.IncreaseCounterUseCase
+import com.cornershop.counterstest.domain.usecases.counter.*
 import com.cornershop.counterstest.presentation.commons.BaseViewModel
 import com.cornershop.counterstest.presentation.commons.errorevent.CommonErrorEvents
 import com.cornershop.counterstest.presentation.commons.errorevent.CountersErrorEvents
@@ -22,7 +19,8 @@ class CountersViewModel(
 	private val getCountersUseCase: GetCountersUseCase,
 	private val increaseCounterUseCase: IncreaseCounterUseCase,
 	private val decreaseCounterUseCase: DecreaseCounterUseCase,
-	private val deleteCounterUseCase: DeleteCounterUseCase
+	private val deleteCounterUseCase: DeleteCounterUseCase,
+	private val searchCountersByTextUseCase: SearchCountersByTextUseCase
 ) : BaseViewModel() {
 	private val _countersLiveData: MutableLiveData<ViewState<CountersFragmentUiModel>> =
 		MutableLiveData()
@@ -140,4 +138,18 @@ class CountersViewModel(
 		timesCount = counters.sumOf { counter -> counter.count },
 		counters = counters.toUIModel()
 	)
+
+	fun searchCountersByText(searchText: String) = viewModelScope.launch {
+		val viewState: ViewState<CountersFragmentUiModel> =
+			when (val useCaseResult = searchCountersByTextUseCase(searchText)) {
+				is ResultWrapper.Success -> {
+					ViewState.Success(buildCountersUiModel(useCaseResult.value))
+				}
+				else -> {
+					ViewState.Error(CommonErrorEvents.Generic)
+				}
+			}
+
+		_countersLiveData.postValue(viewState)
+	}
 }

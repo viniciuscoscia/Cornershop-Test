@@ -12,6 +12,7 @@ interface CountersLocalDataSource {
     suspend fun deleteCounter(counter: Counter)
     suspend fun updateCounter(counter: Counter)
     suspend fun updateDatabase(counters: List<Counter>)
+    suspend fun searchByText(searchText: String): List<Counter>
 }
 
 class CountersLocalDataSourceImpl(
@@ -39,5 +40,9 @@ class CountersLocalDataSourceImpl(
 
     override suspend fun updateDatabase(counters: List<Counter>) {
         countersDao.updateData(counters.toDatabaseEntity())
+    }
+
+    override suspend fun searchByText(searchText: String): List<Counter> {
+        return countersDao.searchByText("%$searchText%").toDomainEntity()
     }
 }

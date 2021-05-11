@@ -9,10 +9,11 @@ import org.koin.dsl.module
 val applicationModule = module(override = true) {
     viewModel {
         CountersViewModel(
-            getCountersUseCase = get(),
-            increaseCounterUseCase = get(),
-            decreaseCounterUseCase = get(),
-            deleteCounterUseCase = get()
+	        getCountersUseCase = get(),
+	        increaseCounterUseCase = get(),
+	        decreaseCounterUseCase = get(),
+	        deleteCounterUseCase = get(),
+	        searchCountersByTextUseCase = get()
         )
     }
 

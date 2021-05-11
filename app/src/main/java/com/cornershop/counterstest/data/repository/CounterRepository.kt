@@ -11,6 +11,7 @@ interface CounterRepository {
     suspend fun increaseCounter(counterId: String): ResultWrapper<List<Counter>>
     suspend fun decreaseCounter(counterId: String): ResultWrapper<List<Counter>>
     suspend fun deleteCounter(counterId: String): ResultWrapper<List<Counter>>
+    suspend fun searchByText(text: String): ResultWrapper<List<Counter>>
 }
 
 class CounterRepositoryImpl(
@@ -41,6 +42,14 @@ class CounterRepositoryImpl(
 
     override suspend fun deleteCounter(counterId: String): ResultWrapper<List<Counter>> {
         return checkResponseAndUpdateDatabase(remoteDataSource.deleteCounter(counterId))
+    }
+
+    override suspend fun searchByText(text: String): ResultWrapper<List<Counter>> {
+        return try {
+            ResultWrapper.Success(localDataSource.searchByText(text))
+        } catch (e: Exception) {
+            ResultWrapper.DatabaseError
+        }
     }
 
     private suspend fun checkResponseAndUpdateDatabase(

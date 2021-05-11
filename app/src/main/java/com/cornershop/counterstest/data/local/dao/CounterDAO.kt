@@ -26,6 +26,9 @@ interface CounterDAO {
     @Query("DELETE FROM counters")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM counters WHERE title LIKE :searchText")
+    suspend fun searchByText(searchText: String): List<CounterDatabaseEntity>
+
     @Delete
     fun delete(counter: CounterDatabaseEntity)
 }
