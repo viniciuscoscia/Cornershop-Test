@@ -20,15 +20,14 @@ class CountersAdapter(
 		setHasStableIds(true)
 	}
 
+	var tracker: SelectionTracker<CounterUiModel>? = null
+	var isSelectionMode = false
+
 	private var counters: List<CounterUiModel> = emptyList()
 	fun setCounters(counters: List<CounterUiModel>) {
 		this.counters = counters
 		notifyDataSetChanged()
 	}
-
-	var tracker: SelectionTracker<CounterUiModel>? = null
-
-	var isSelectionMode = false
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val viewBinding =

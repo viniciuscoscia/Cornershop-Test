@@ -61,10 +61,12 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 		addCounterButton.setOnClickListener {
 			navigateToAddCounter()
 		}
+
 		couldNotLoadCountersLayout.retry.setOnClickListener {
 			couldNotLoadCountersLayout.root.hide()
 			viewModel.getCounters()
 		}
+
 		delete.setOnClickListener {
 			viewModel.onDeleteCounter()
 		}
