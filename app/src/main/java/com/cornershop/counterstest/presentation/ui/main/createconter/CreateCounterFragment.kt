@@ -18,13 +18,13 @@ import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.CreateCounterFragmentBinding
-import com.cornershop.counterstest.presentation.commons.ViewState
 import com.cornershop.counterstest.presentation.commons.errorevent.DialogErrorEvent
 import com.cornershop.counterstest.presentation.commons.errorevent.ErrorEvent
 import com.cornershop.counterstest.presentation.commons.errorevent.showErrorDialog
 import com.cornershop.counterstest.presentation.commons.util.hide
 import com.cornershop.counterstest.presentation.commons.util.show
 import com.cornershop.counterstest.presentation.commons.util.showGenericErrorDialog
+import com.cornershop.counterstest.presentation.commons.viewstate.ViewState
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

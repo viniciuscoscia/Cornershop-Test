@@ -1,7 +1,6 @@
 package com.cornershop.counterstest.presentation.ui.main.counters
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -12,11 +11,12 @@ import androidx.recyclerview.selection.StorageStrategy
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
-import com.cornershop.counterstest.presentation.commons.ViewState
 import com.cornershop.counterstest.presentation.commons.errorevent.*
 import com.cornershop.counterstest.presentation.commons.util.hide
 import com.cornershop.counterstest.presentation.commons.util.show
 import com.cornershop.counterstest.presentation.commons.util.showGenericErrorDialog
+import com.cornershop.counterstest.presentation.commons.viewstate.MultiSelectionState
+import com.cornershop.counterstest.presentation.commons.viewstate.ViewState
 import com.cornershop.counterstest.presentation.model.CounterUiModel
 import com.cornershop.counterstest.presentation.model.CountersFragmentUiModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -80,6 +80,18 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 				}
 			}
 		}
+
+		viewModel.multiSelectionLiveData.observe(viewLifecycleOwner) { state ->
+			when (state) {
+				is MultiSelectionState.Enabled -> {
+					countersAdapter.enterSelectionMode()
+				}
+
+				else -> {
+					countersAdapter.exitSelectionMode()
+				}
+			}
+		}
 	}
 
 	private fun checkErrorEvent(errorEvent: ErrorEvent) {
@@ -138,7 +150,6 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 	private fun showCouldNotGetCountersError() = with(viewBinding) {
 		showCountersLayout(show = false)
 		noCountersLayout.root.hide()
-
 		couldNotLoadCountersLayout.root.show()
 	}
 
@@ -183,9 +194,9 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 
 		tracker?.addObserver(object : SelectionTracker.SelectionObserver<CounterUiModel>() {
 			override fun onSelectionChanged() {
+				super.onSelectionChanged()
 				tracker?.run {
-					super.onSelectionChanged()
-					Log.d("Vinicius", "Teste")
+					viewModel.enterMultiSelectionMode()
 				}
 			}
 		})

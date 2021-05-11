@@ -79,6 +79,13 @@ class CountersAdapter(
 	fun getItem(position: Int) = counters[position]
 	fun getPosition(id: String) = counters.indexOfFirst { it.id == id }
 
+	fun exitSelectionMode() {
+		if (isSelectionMode) {
+			isSelectionMode = false
+			notifyDataSetChanged()
+		}
+	}
+
 	inner class ViewHolder(
 		private val viewBinding: CountersLayoutBinding
 	) : RecyclerView.ViewHolder(viewBinding.root) {
@@ -109,9 +116,9 @@ class CountersAdapter(
 		}
 
 		private fun showCheckedItem(isSelected: Boolean) = with(viewBinding) {
-			increaseCounterButton.visibilityByBoolean(isSelected.not())
-			decrementCounterButton.visibilityByBoolean(isSelected.not())
-			counterQuantityTextView.visibilityByBoolean(isSelected.not())
+			increaseCounterButton.visibilityByBoolean(isSelected.not() || isSelectionMode.not())
+			decrementCounterButton.visibilityByBoolean(isSelected.not() || isSelectionMode.not())
+			counterQuantityTextView.visibilityByBoolean(isSelected.not() || isSelectionMode.not())
 
 			checkImage.visibilityByBoolean(isSelected)
 		}

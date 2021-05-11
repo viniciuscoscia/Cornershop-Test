@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cornershop.counterstest.data.helper.ResultWrapper
 import com.cornershop.counterstest.domain.usecases.counter.CreateCounterUseCase
-import com.cornershop.counterstest.presentation.commons.ViewState
 import com.cornershop.counterstest.presentation.commons.errorevent.CommonErrorEvents
 import com.cornershop.counterstest.presentation.commons.errorevent.CountersErrorEvents
+import com.cornershop.counterstest.presentation.commons.viewstate.ViewState
 import kotlinx.coroutines.launch
 
 class CreateCounterViewModel(

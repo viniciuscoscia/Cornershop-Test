@@ -8,10 +8,11 @@ import com.cornershop.counterstest.domain.usecases.counter.DeleteCounterUseCase
 import com.cornershop.counterstest.domain.usecases.counter.GetCountersUseCase
 import com.cornershop.counterstest.domain.usecases.counter.IncreaseCounterUseCase
 import com.cornershop.counterstest.presentation.commons.BaseViewModel
-import com.cornershop.counterstest.presentation.commons.ViewState
 import com.cornershop.counterstest.presentation.commons.errorevent.CommonErrorEvents
 import com.cornershop.counterstest.presentation.commons.errorevent.CountersErrorEvents
 import com.cornershop.counterstest.presentation.commons.errorevent.ErrorEvent
+import com.cornershop.counterstest.presentation.commons.viewstate.MultiSelectionState
+import com.cornershop.counterstest.presentation.commons.viewstate.ViewState
 import com.cornershop.counterstest.presentation.mapper.toUIModel
 import com.cornershop.counterstest.presentation.model.CounterUiModel
 import com.cornershop.counterstest.presentation.model.CountersFragmentUiModel
@@ -26,6 +27,17 @@ class CountersViewModel(
     private val _countersLiveData: MutableLiveData<ViewState<CountersFragmentUiModel>> =
         MutableLiveData()
     val countersLiveData: LiveData<ViewState<CountersFragmentUiModel>> = _countersLiveData
+
+    private val _multiSelectionLiveData: MutableLiveData<MultiSelectionState> = MutableLiveData()
+    val multiSelectionLiveData = _multiSelectionLiveData
+
+    fun enterMultiSelectionMode() {
+        _multiSelectionLiveData.postValue(MultiSelectionState.Enabled)
+    }
+
+    fun exitMultiSelectionMode() {
+        _multiSelectionLiveData.postValue(MultiSelectionState.Disabled)
+    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun getCounters() = viewModelScope.launch {

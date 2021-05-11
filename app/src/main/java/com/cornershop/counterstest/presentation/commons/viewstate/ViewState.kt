@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.presentation.commons
+package com.cornershop.counterstest.presentation.commons.viewstate
 
 import com.cornershop.counterstest.presentation.commons.errorevent.ErrorEvent
 
