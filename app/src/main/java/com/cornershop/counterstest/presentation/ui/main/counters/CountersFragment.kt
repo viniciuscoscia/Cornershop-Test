@@ -1,5 +1,6 @@
 package com.cornershop.counterstest.presentation.ui.main.counters
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -13,10 +14,12 @@ import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
 import com.cornershop.counterstest.presentation.commons.errorevent.*
 import com.cornershop.counterstest.presentation.commons.util.hide
+import com.cornershop.counterstest.presentation.commons.util.invisible
 import com.cornershop.counterstest.presentation.commons.util.show
 import com.cornershop.counterstest.presentation.commons.util.showGenericErrorDialog
 import com.cornershop.counterstest.presentation.commons.viewstate.MultiSelectionState
 import com.cornershop.counterstest.presentation.commons.viewstate.ViewState
+import com.cornershop.counterstest.presentation.customsearchview.CustomSearchViewState
 import com.cornershop.counterstest.presentation.model.CounterUiModel
 import com.cornershop.counterstest.presentation.model.CountersFragmentUiModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,11 +29,14 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 	private val viewBinding: FragmentCountersBinding by viewBinding()
 	private var tracker: SelectionTracker<CounterUiModel>? = null
 
+	private var isSearching: Boolean = false
+
 	private val countersAdapter: CountersAdapter by lazy {
 		CountersAdapter(
 			onIncreaseCounterClicked = { counterUiModel ->
 				viewModel.onIncreaseCounter(counterUiModel)
-			}, onDecrementCounterClicked = { counterUiModel ->
+			},
+			onDecrementCounterClicked = { counterUiModel ->
 				viewModel.onDecreaseCounter(counterUiModel)
 			}
 		)
@@ -43,6 +49,34 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 		setupListeners()
 		setupLiveData()
 		setupSwipeRefreshLayout()
+		setupSearchBar()
+	}
+
+	private fun setupSearchBar() {
+		viewBinding.searchView.initView(
+			onTextChangedListener = { viewState ->
+				when (viewState) {
+					is CustomSearchViewState.Writing -> {
+						hideDarkEffect()
+						viewModel.searchCountersByText(viewState.text)
+					}
+					is CustomSearchViewState.EmptyText -> {
+						showDarkEffect()
+						viewModel.getCounters()
+					}
+				}
+			},
+			onBackPressedListener = {
+				isSearching = false
+				hideDarkEffect()
+				viewModel.getCounters(false)
+			}, onSearchViewClick = {
+				isSearching = true
+				showDarkEffect()
+			}, onSearchDisabled = {
+				hideDarkEffect()
+			}
+		)
 	}
 
 	override fun onResume() {
@@ -67,15 +101,21 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 			viewModel.getCounters()
 		}
 
-		delete.setOnClickListener {
-			viewModel.onDeleteCounter()
-		}
+		with(multiSelectionBar) {
+			deleteCounterButton.setOnClickListener {
+				viewModel.onDeleteCounter()
+			}
 
-		share.setOnClickListener {
-			tracker?.run {
-				if (hasSelection()) {
-					shareCounter(selection.first())
+			shareCounterButton.setOnClickListener {
+				tracker?.run {
+					if (hasSelection()) {
+						shareCounter(selection.first())
+					}
 				}
+			}
+
+			closeBarButton.setOnClickListener {
+				exitMultiSelectionMode()
 			}
 		}
 	}
@@ -157,37 +197,10 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 			}
 		}
 	}
-
-	private fun IncreaseDecreaseCounterErrorEvent.showIncreaseDecreaseErrorDialog(
-		onRetryClicked: () -> Unit
-	) {
-		val context = context ?: return
-
-		with(AlertDialog.Builder(context)) {
-			setTitle(
-				context.getString(
-					errorTitle,
-					counterUiModel.title,
-					getCalculatedCounterValue()
-				)
-			)
-			setMessage(
-				context.getString(errorMessage)
-			)
-			setPositiveButton(positiveButton) { dialog, _ ->
-				dialog.dismiss()
-			}
-			setNegativeButton(negativeButton) { dialog, _ ->
-				onRetryClicked()
-				dialog.dismiss()
-			}
-			show()
-		}
-	}
-
 	private fun showCouldNotGetCountersError() = with(viewBinding) {
 		showCountersLayout(show = false)
 		noCountersLayout.root.hide()
+		noResultsText.hide()
 		couldNotLoadCountersLayout.root.show()
 	}
 
@@ -203,6 +216,7 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 			showCountersLayout(show = true)
 			couldNotLoadCountersLayout.root.hide()
 			noCountersLayout.root.hide()
+			noResultsText.hide()
 
 			itemsCounter.text = getString(R.string.n_items, uiModel.itemsCount)
 			timesCounter.text = getString(R.string.n_times, uiModel.timesCount)
@@ -235,12 +249,26 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 			super.onSelectionChanged()
 			tracker?.run {
 				if (hasSelection()) {
-					viewModel.enterMultiSelectionMode(this.selection.firstOrNull()?.id ?: "")
+					enterMultiSelectionMode(selection.firstOrNull())
 				} else {
-					viewModel.exitMultiSelectionMode()
+					exitMultiSelectionMode()
 				}
 			}
 		}
+	}
+
+	fun exitMultiSelectionMode() {
+		viewBinding.searchView.show()
+		viewBinding.multiSelectionBar.root.hide()
+
+		viewModel.exitMultiSelectionMode()
+	}
+
+	fun enterMultiSelectionMode(counter: CounterUiModel?) {
+		viewBinding.searchView.invisible()
+		viewBinding.multiSelectionBar.root.show()
+
+		viewModel.enterMultiSelectionMode(counter?.id ?: "")
 	}
 
 	private fun getSelectionTracker() = SelectionTracker.Builder(
@@ -257,7 +285,13 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 		showCountersLayout(show = false)
 		couldNotLoadCountersLayout.root.hide()
 
-		noCountersLayout.root.show()
+		if (isSearching) {
+			noResultsText.show()
+			noCountersLayout.root.hide()
+		} else {
+			noResultsText.hide()
+			noCountersLayout.root.show()
+		}
 	}
 
 	private fun showCountersLayout(show: Boolean) = with(viewBinding) {
@@ -274,6 +308,41 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 
 	private fun showLoading() {
 		viewBinding.loading.root.show()
+	}
+
+	private fun showDarkEffect() = with(viewBinding.darkEffectView) {
+		if (visibility != View.VISIBLE) show()
+	}
+
+	private fun hideDarkEffect() = with(viewBinding.darkEffectView) {
+		if (visibility != View.GONE) hide()
+	}
+
+	private fun IncreaseDecreaseCounterErrorEvent.showIncreaseDecreaseErrorDialog(
+		onRetryClicked: () -> Unit
+	) {
+		val context = context ?: return
+
+		with(AlertDialog.Builder(context)) {
+			setTitle(
+				context.getString(
+					errorTitle,
+					counterUiModel.title,
+					getCalculatedCounterValue()
+				)
+			)
+			setMessage(
+				context.getString(errorMessage)
+			)
+			setPositiveButton(positiveButton) { dialog, _ ->
+				dialog.dismiss()
+			}
+			setNegativeButton(negativeButton) { dialog, _ ->
+				onRetryClicked()
+				dialog.dismiss()
+			}
+			show()
+		}
 	}
 
 	companion object {
