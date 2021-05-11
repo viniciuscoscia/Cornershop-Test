@@ -17,7 +17,7 @@ class CreateCounterViewModel(
     val counterLiveData = _counterLiveData
 
     fun createCounter(counterTitle: String) = viewModelScope.launch {
-        _counterLiveData.postValue(ViewState.Loading)
+        _counterLiveData.postValue(ViewState.Loading.Normal)
 
         val viewState: ViewState<Nothing> =
             when (createCounterUseCase(counterTitle)) {

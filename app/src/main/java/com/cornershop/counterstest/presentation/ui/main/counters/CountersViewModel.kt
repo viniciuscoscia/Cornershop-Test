@@ -19,110 +19,125 @@ import com.cornershop.counterstest.presentation.model.CountersFragmentUiModel
 import kotlinx.coroutines.launch
 
 class CountersViewModel(
-    private val getCountersUseCase: GetCountersUseCase,
-    private val increaseCounterUseCase: IncreaseCounterUseCase,
-    private val decreaseCounterUseCase: DecreaseCounterUseCase,
-    private val deleteCounterUseCase: DeleteCounterUseCase
+	private val getCountersUseCase: GetCountersUseCase,
+	private val increaseCounterUseCase: IncreaseCounterUseCase,
+	private val decreaseCounterUseCase: DecreaseCounterUseCase,
+	private val deleteCounterUseCase: DeleteCounterUseCase
 ) : BaseViewModel() {
-    private val _countersLiveData: MutableLiveData<ViewState<CountersFragmentUiModel>> =
-        MutableLiveData()
-    val countersLiveData: LiveData<ViewState<CountersFragmentUiModel>> = _countersLiveData
+	private val _countersLiveData: MutableLiveData<ViewState<CountersFragmentUiModel>> =
+		MutableLiveData()
+	val countersLiveData: LiveData<ViewState<CountersFragmentUiModel>> = _countersLiveData
 
-    private val _multiSelectionLiveData: MutableLiveData<MultiSelectionState> = MutableLiveData()
-    val multiSelectionLiveData = _multiSelectionLiveData
+	private val _multiSelectionLiveData: MutableLiveData<MultiSelectionState> = MutableLiveData()
+	val multiSelectionLiveData = _multiSelectionLiveData
 
-    fun enterMultiSelectionMode() {
-        _multiSelectionLiveData.postValue(MultiSelectionState.Enabled)
-    }
+	private var selectedCounterId: String? = null
 
-    fun exitMultiSelectionMode() {
-        _multiSelectionLiveData.postValue(MultiSelectionState.Disabled)
-    }
+	fun enterMultiSelectionMode(counterId: String) {
+		selectedCounterId = counterId
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun getCounters() = viewModelScope.launch {
-        _countersLiveData.postValue(ViewState.Loading)
+		_multiSelectionLiveData.postValue(MultiSelectionState.Enabled)
+	}
 
-        val viewState = when (val useCaseResult = getCountersUseCase()) {
-            is ResultWrapper.Success -> {
-                ViewState.Success(buildCountersUiModel(useCaseResult.value))
-            }
-            is ResultWrapper.NetworkErrorEntity.Timeout,
-            is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
-                ViewState.Error(CountersErrorEvents.GetCountersNetworkUnavailable)
-            }
-            else -> {
-                ViewState.Error(CommonErrorEvents.Generic)
-            }
-        }
+	fun exitMultiSelectionMode() {
+		selectedCounterId = null
 
-        _countersLiveData.postValue(viewState)
-    }
+		_multiSelectionLiveData.postValue(MultiSelectionState.Disabled)
+	}
 
-    fun onIncreaseCounter(counterUiModel: CounterUiModel) = viewModelScope.launch {
-        _countersLiveData.postValue(ViewState.Loading)
+	fun getCounters(isSwipeRefresh: Boolean = false) = viewModelScope.launch {
+		_countersLiveData.postValue(
+			if (isSwipeRefresh)
+				ViewState.Loading.SwipeRefresh
+			else
+				ViewState.Loading.Normal
+		)
 
-        val viewState: ViewState<CountersFragmentUiModel> =
-            when (val useCaseResult = increaseCounterUseCase(counterUiModel.id)) {
-                is ResultWrapper.Success -> {
-                    ViewState.Success(buildCountersUiModel(useCaseResult.value))
-                }
-                is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
-                    val errorEvent: ErrorEvent =
-                        CountersErrorEvents.IncreaseCounterNetworkUnavailable(counterUiModel)
-                    ViewState.Error(errorEvent)
-                }
-                else -> {
-                    ViewState.Error(CommonErrorEvents.Generic)
-                }
-            }
+		val viewState = when (val useCaseResult = getCountersUseCase()) {
+			is ResultWrapper.Success -> {
+				ViewState.Success(buildCountersUiModel(useCaseResult.value))
+			}
+			is ResultWrapper.NetworkErrorEntity.Timeout,
+			is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
+				ViewState.Error(CountersErrorEvents.GetCountersNetworkUnavailable)
+			}
+			else -> {
+				ViewState.Error(CommonErrorEvents.Generic)
+			}
+		}
 
-        _countersLiveData.postValue(viewState)
-    }
+		_countersLiveData.postValue(viewState)
+	}
 
-    fun onDecreaseCounter(counterUiModel: CounterUiModel) = viewModelScope.launch {
-        _countersLiveData.postValue(ViewState.Loading)
+	fun onIncreaseCounter(counterUiModel: CounterUiModel) = viewModelScope.launch {
+		_countersLiveData.postValue(ViewState.Loading.Normal)
 
-        val viewState: ViewState<CountersFragmentUiModel> =
-            when (val useCaseResult = decreaseCounterUseCase(counterUiModel.id)) {
-                is ResultWrapper.Success -> {
-                    ViewState.Success(buildCountersUiModel(useCaseResult.value))
-                }
-                is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
-                    val errorEvent: ErrorEvent =
-                        CountersErrorEvents.DecreaseCounterNetworkUnavailable(counterUiModel)
-                    ViewState.Error(errorEvent)
-                }
-                else -> {
-                    ViewState.Error(CommonErrorEvents.Generic)
-                }
-            }
+		val viewState: ViewState<CountersFragmentUiModel> =
+			when (val useCaseResult = increaseCounterUseCase(counterUiModel.id)) {
+				is ResultWrapper.Success -> {
+					ViewState.Success(buildCountersUiModel(useCaseResult.value))
+				}
+				is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
+					val errorEvent: ErrorEvent =
+						CountersErrorEvents.IncreaseCounterNetworkUnavailable(counterUiModel)
+					ViewState.Error(errorEvent)
+				}
+				else -> {
+					ViewState.Error(CommonErrorEvents.Generic)
+				}
+			}
 
-        _countersLiveData.postValue(viewState)
-    }
+		_countersLiveData.postValue(viewState)
+	}
 
-    fun onDeleteCounter(counterId: String) = viewModelScope.launch {
-        _countersLiveData.postValue(ViewState.Loading)
+	fun onDecreaseCounter(counterUiModel: CounterUiModel) = viewModelScope.launch {
+		_countersLiveData.postValue(ViewState.Loading.Normal)
 
-        val viewState: ViewState<CountersFragmentUiModel> =
-            when (val useCaseResult = deleteCounterUseCase(counterId)) {
-                is ResultWrapper.Success -> {
-                    ViewState.Success(buildCountersUiModel(useCaseResult.value))
-                }
-                is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
-                    ViewState.Error(CountersErrorEvents.DeleteCounterNetworkUnavailable)
-                }
-                else -> {
-                    ViewState.Error(CommonErrorEvents.Generic)
-                }
-            }
+		val viewState: ViewState<CountersFragmentUiModel> =
+			when (val useCaseResult = decreaseCounterUseCase(counterUiModel.id)) {
+				is ResultWrapper.Success -> {
+					ViewState.Success(buildCountersUiModel(useCaseResult.value))
+				}
+				is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
+					val errorEvent: ErrorEvent =
+						CountersErrorEvents.DecreaseCounterNetworkUnavailable(counterUiModel)
+					ViewState.Error(errorEvent)
+				}
+				else -> {
+					ViewState.Error(CommonErrorEvents.Generic)
+				}
+			}
 
-        _countersLiveData.postValue(viewState)
-    }
+		_countersLiveData.postValue(viewState)
+	}
 
-    private fun buildCountersUiModel(counters: List<Counter>) = CountersFragmentUiModel(
-        itemsCount = counters.size,
-        timesCount = counters.sumOf { counter -> counter.count },
-        counters = counters.toUIModel()
-    )
+	fun onDeleteCounter() = viewModelScope.launch {
+		_countersLiveData.postValue(ViewState.Loading.Normal)
+
+		if (selectedCounterId.isNullOrBlank()) {
+			ViewState.Error(CommonErrorEvents.Generic)
+			return@launch
+		}
+
+		val viewState: ViewState<CountersFragmentUiModel> =
+			when (val useCaseResult = deleteCounterUseCase(counterId = selectedCounterId!!)) {
+				is ResultWrapper.Success -> {
+					ViewState.Success(buildCountersUiModel(useCaseResult.value))
+				}
+				is ResultWrapper.NetworkErrorEntity.NoInternetConnection -> {
+					ViewState.Error(CountersErrorEvents.DeleteCounterNetworkUnavailable)
+				}
+				else -> {
+					ViewState.Error(CommonErrorEvents.Generic)
+				}
+			}
+
+		_countersLiveData.postValue(viewState)
+	}
+
+	private fun buildCountersUiModel(counters: List<Counter>) = CountersFragmentUiModel(
+		itemsCount = counters.size,
+		timesCount = counters.sumOf { counter -> counter.count },
+		counters = counters.toUIModel()
+	)
 }

@@ -28,7 +28,7 @@ class CountersAdapter(
 
 	var tracker: SelectionTracker<CounterUiModel>? = null
 
-	private var isSelectionMode = false
+	var isSelectionMode = false
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val viewBinding =
@@ -116,9 +116,9 @@ class CountersAdapter(
 		}
 
 		private fun showCheckedItem(isSelected: Boolean) = with(viewBinding) {
-			increaseCounterButton.visibilityByBoolean(isSelected.not() || isSelectionMode.not())
-			decrementCounterButton.visibilityByBoolean(isSelected.not() || isSelectionMode.not())
-			counterQuantityTextView.visibilityByBoolean(isSelected.not() || isSelectionMode.not())
+			increaseCounterButton.visibilityByBoolean(isSelected.not() && isSelectionMode.not())
+			decrementCounterButton.visibilityByBoolean(isSelected.not() && isSelectionMode.not())
+			counterQuantityTextView.visibilityByBoolean(isSelected.not() && isSelectionMode.not())
 
 			checkImage.visibilityByBoolean(isSelected)
 		}

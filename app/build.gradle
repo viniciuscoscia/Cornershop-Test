@@ -60,6 +60,7 @@ dependencies {
     implementation libs.viewBindingDelegate
     implementation libs.recyclerView
     implementation libs.recyclerViewSelection
+    implementation libs.swipeRefreshLayout
 
     //Remote data
     implementation libs.retrofit

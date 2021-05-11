@@ -4,8 +4,8 @@ import com.cornershop.counterstest.data.remote.entity.AddCounterRequest
 import com.cornershop.counterstest.data.remote.entity.CounterResponse
 import com.cornershop.counterstest.data.remote.entity.GeneralCounterRequest
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.POST
 
 interface CounterAPI {
@@ -21,7 +21,7 @@ interface CounterAPI {
     @POST("$BASE_ENDPOINT/counter/dec")
     suspend fun postDecreaseCounter(@Body id: GeneralCounterRequest): List<CounterResponse>
 
-    @DELETE("$BASE_ENDPOINT/counter")
+    @HTTP(method = "DELETE", path = "$BASE_ENDPOINT/counter", hasBody = true)
     suspend fun deleteCounter(@Body id: GeneralCounterRequest): List<CounterResponse>
 
     companion object {

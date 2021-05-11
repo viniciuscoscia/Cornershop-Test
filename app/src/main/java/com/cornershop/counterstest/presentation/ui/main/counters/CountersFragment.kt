@@ -42,6 +42,19 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 
 		setupListeners()
 		setupLiveData()
+		setupSwipeRefreshLayout()
+	}
+
+	override fun onResume() {
+		super.onResume()
+		viewModel.getCounters()
+	}
+
+	private fun setupSwipeRefreshLayout() = with(viewBinding.countersSwipeRefreshLayout) {
+		setOnRefreshListener {
+			viewModel.getCounters(isSwipeRefresh = true)
+		}
+		setColorSchemeResources(R.color.orange)
 	}
 
 	private fun setupListeners() = with(viewBinding) {
@@ -51,6 +64,9 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 		couldNotLoadCountersLayout.retry.setOnClickListener {
 			couldNotLoadCountersLayout.root.hide()
 			viewModel.getCounters()
+		}
+		delete.setOnClickListener {
+			viewModel.onDeleteCounter()
 		}
 	}
 
@@ -86,8 +102,7 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 				is MultiSelectionState.Enabled -> {
 					countersAdapter.enterSelectionMode()
 				}
-
-				else -> {
+				is MultiSelectionState.Disabled -> {
 					countersAdapter.exitSelectionMode()
 				}
 			}
@@ -182,27 +197,38 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 	}
 
 	private fun setupTracker() {
-		tracker = SelectionTracker.Builder(
-			COUNTERS_SELECTION_ID,
-			viewBinding.countersRecyclerView,
-			CounterItemKeyProvider(countersAdapter),
-			CounterItemLookup(viewBinding.countersRecyclerView),
-			StorageStrategy.createParcelableStorage(CounterUiModel::class.java)
-		).withSelectionPredicate(
-			SelectionPredicates.createSelectSingleAnything()
-		).build()
-
-		tracker?.addObserver(object : SelectionTracker.SelectionObserver<CounterUiModel>() {
-			override fun onSelectionChanged() {
-				super.onSelectionChanged()
-				tracker?.run {
-					viewModel.enterMultiSelectionMode()
-				}
-			}
-		})
+		tracker = getSelectionTracker()
+		setupTrackObserver()
 
 		countersAdapter.tracker = tracker
 	}
+
+	private fun setupTrackObserver() {
+		tracker?.addObserver(trackerObserver)
+	}
+
+	private val trackerObserver = object : SelectionTracker.SelectionObserver<CounterUiModel>() {
+		override fun onSelectionChanged() {
+			super.onSelectionChanged()
+			tracker?.run {
+				if (hasSelection()) {
+					viewModel.enterMultiSelectionMode(this.selection.firstOrNull()?.id ?: "")
+				} else {
+					viewModel.exitMultiSelectionMode()
+				}
+			}
+		}
+	}
+
+	private fun getSelectionTracker() = SelectionTracker.Builder(
+		COUNTERS_SELECTION_ID,
+		viewBinding.countersRecyclerView,
+		CounterItemKeyProvider(countersAdapter),
+		CounterItemLookup(viewBinding.countersRecyclerView),
+		StorageStrategy.createParcelableStorage(CounterUiModel::class.java)
+	).withSelectionPredicate(
+		SelectionPredicates.createSelectSingleAnything()
+	).build()
 
 	private fun onNoCountersOrError() = with(viewBinding) {
 		showCountersLayout(show = false)
@@ -217,8 +243,10 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 		counterViews.forEach { view -> if (show) view.show() else view.hide() }
 	}
 
-	private fun hideLoading() {
-		viewBinding.loading.root.hide()
+	private fun hideLoading() = with(viewBinding) {
+		countersSwipeRefreshLayout.isRefreshing = false
+
+		loading.root.hide()
 	}
 
 	private fun showLoading() {
