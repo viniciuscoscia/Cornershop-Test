@@ -70,6 +70,27 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 		delete.setOnClickListener {
 			viewModel.onDeleteCounter()
 		}
+
+		share.setOnClickListener {
+			tracker?.run {
+				if (hasSelection()) {
+					shareCounter(selection.first())
+				}
+			}
+		}
+	}
+
+	private fun shareCounter(counter: CounterUiModel) {
+		val sendIntent: Intent = Intent().apply {
+			action = Intent.ACTION_SEND
+			putExtra(
+				Intent.EXTRA_TEXT,
+				getString(R.string.share_text, counter.count, counter.title)
+			)
+			type = COUNTER_SHARE_TYPE
+		}
+
+		startActivity(Intent.createChooser(sendIntent, null))
 	}
 
 	private fun navigateToAddCounter() {
@@ -79,8 +100,8 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 			)
 	}
 
-	private fun setupLiveData() {
-		viewModel.countersLiveData.observe(viewLifecycleOwner) { counterUiModel ->
+	private fun setupLiveData() = with(viewModel) {
+		countersLiveData.observe(viewLifecycleOwner) { counterUiModel ->
 			if ((counterUiModel is ViewState.Loading).not()) hideLoading()
 
 			when (counterUiModel) {
@@ -99,7 +120,7 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 			}
 		}
 
-		viewModel.multiSelectionLiveData.observe(viewLifecycleOwner) { state ->
+		multiSelectionLiveData.observe(viewLifecycleOwner) { state ->
 			when (state) {
 				is MultiSelectionState.Enabled -> {
 					countersAdapter.enterSelectionMode()
@@ -257,5 +278,6 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 
 	companion object {
 		private const val COUNTERS_SELECTION_ID = "COUNTERS_SELECTION_ID"
+		private const val COUNTER_SHARE_TYPE = "text/plain"
 	}
 }
