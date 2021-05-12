@@ -19,6 +19,15 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            useJUnitPlatform()
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+            }
+        }
+    }
 
     buildTypes {
         release {
@@ -56,7 +65,6 @@ dependencies {
     implementation libs.constraintLayout
     implementation libs.navigationFragment
     implementation libs.navigationUi
-//    implementation libs.materialSearchView
     implementation libs.viewBindingDelegate
     implementation libs.recyclerView
     implementation libs.recyclerViewSelection
@@ -72,7 +80,6 @@ dependencies {
     //Local data
     implementation libs.room
     implementation libs.roomKtx
-//    testImplementation libs.roomTesting
     kapt libs.roomCompiler
 
     //DI
@@ -81,6 +88,13 @@ dependencies {
     implementation libs.koinViewModel
 
     //Test
-    testImplementation libs.junit
-    androidTestImplementation libs.junitAndroid
+    testImplementation libs.junitAndroid
+    testImplementation libs.junitJupiterApi
+    testImplementation libs.kotlinTestJunit
+    testImplementation libs.coreTesting
+    testImplementation libs.mockk
+    testImplementation libs.coroutinesTest
+    testImplementation libs.roomTesting
+    testImplementation libs.androidxTestCore
+    testRuntimeOnly libs.junitJupiterEngine
 }

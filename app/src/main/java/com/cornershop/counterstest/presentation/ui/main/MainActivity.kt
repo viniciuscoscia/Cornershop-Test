@@ -12,7 +12,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    companion object {
+
+	companion object {
         fun newIntent(context: Context): Intent {
             return Intent(context, MainActivity::class.java)
         }
