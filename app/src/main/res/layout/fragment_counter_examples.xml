@@ -10,18 +10,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="@dimen/icons_size"
+            android:layout_height="@dimen/icons_size"
+            android:layout_marginStart="@dimen/double_grid"
+            android:layout_marginTop="@dimen/double_grid"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_back_orange"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/examples"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/extra_double_grid"
+            android:text="@string/examples"
+            android:textColor="@color/primary_text_color"
+            android:textSize="@dimen/examples_label_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/back_button"
+            app:layout_constraintStart_toEndOf="@id/back_button"
+            app:layout_constraintTop_toTopOf="@id/back_button" />
+
         <TextView
             android:id="@+id/example_description_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_grid"
             android:layout_marginTop="@dimen/large_grid"
+            app:layout_constraintStart_toStartOf="parent"
             android:text="@string/examples_description"
             android:textColor="@color/secondary_text_color"
             android:textSize="@dimen/example_description_text_size"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/examples" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/examples_recycler_view"

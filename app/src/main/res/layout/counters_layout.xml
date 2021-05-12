@@ -7,7 +7,7 @@
     android:layout_marginVertical="@dimen/base_grid"
     android:background="@drawable/counter_item_background"
     android:minHeight="@dimen/counter_layout_height"
-    android:paddingHorizontal="@dimen/base_grid">
+    android:paddingHorizontal="@dimen/double_grid">
 
     <TextView
         android:id="@+id/counter_title_text_view"

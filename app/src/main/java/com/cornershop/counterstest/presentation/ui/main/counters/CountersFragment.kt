@@ -50,6 +50,32 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 		setupLiveData()
 		setupSwipeRefreshLayout()
 		setupSearchBar()
+		setupMultiSelectionBar()
+	}
+
+	private fun setupMultiSelectionBar() = with(viewBinding.multiSelectionBar) {
+		deleteCounterButton.setOnClickListener {
+			onDeleteCounter()
+		}
+
+		shareCounterButton.setOnClickListener {
+			tracker?.run {
+				if (hasSelection()) {
+					shareCounter(selection.first())
+				}
+			}
+		}
+
+		closeBarButton.setOnClickListener {
+			exitMultiSelectionMode()
+		}
+	}
+
+	private fun onDeleteCounter() {
+		viewBinding.searchView.show()
+		viewBinding.multiSelectionBar.root.hide()
+
+		viewModel.onDeleteCounter()
 	}
 
 	private fun setupSearchBar() {
@@ -66,15 +92,13 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 					}
 				}
 			},
-			onBackPressedListener = {
+			onExitSearchModeListener = {
 				isSearching = false
 				hideDarkEffect()
 				viewModel.getCounters(false)
 			}, onSearchViewClick = {
 				isSearching = true
 				showDarkEffect()
-			}, onSearchDisabled = {
-				hideDarkEffect()
 			}
 		)
 	}
@@ -101,22 +125,8 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 			viewModel.getCounters()
 		}
 
-		with(multiSelectionBar) {
-			deleteCounterButton.setOnClickListener {
-				viewModel.onDeleteCounter()
-			}
-
-			shareCounterButton.setOnClickListener {
-				tracker?.run {
-					if (hasSelection()) {
-						shareCounter(selection.first())
-					}
-				}
-			}
-
-			closeBarButton.setOnClickListener {
-				exitMultiSelectionMode()
-			}
+		darkEffectView.setOnClickListener {
+			searchView.exitSearchMode()
 		}
 	}
 
@@ -166,8 +176,17 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 					countersAdapter.enterSelectionMode()
 				}
 				is MultiSelectionState.Disabled -> {
+					unselectCounters()
 					countersAdapter.exitSelectionMode()
 				}
+			}
+		}
+	}
+
+	private fun unselectCounters() {
+		tracker?.run {
+			if (selection.isEmpty.not()) {
+				setItemsSelected(selection.toMutableList(), false)
 			}
 		}
 	}
@@ -197,6 +216,7 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 			}
 		}
 	}
+
 	private fun showCouldNotGetCountersError() = with(viewBinding) {
 		showCountersLayout(show = false)
 		noCountersLayout.root.hide()
@@ -315,7 +335,7 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 	}
 
 	private fun hideDarkEffect() = with(viewBinding.darkEffectView) {
-		if (visibility != View.GONE) hide()
+		hide()
 	}
 
 	private fun IncreaseDecreaseCounterErrorEvent.showIncreaseDecreaseErrorDialog(

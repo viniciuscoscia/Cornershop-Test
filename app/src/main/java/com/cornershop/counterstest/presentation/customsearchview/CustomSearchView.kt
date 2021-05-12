@@ -41,14 +41,15 @@ class CustomSearchView : ConstraintLayout {
 	private val backButton: ImageButton = findViewById(R.id.back_button)
 	private val enabledSearchLayout: ConstraintLayout = findViewById(R.id.enabled_search_layout)
 	private val disabledSearchLayout: CardView = findViewById(R.id.disabled_search_layout)
-	private val onSearchDisabled: (() -> Unit)? = null
+	private var onExitSearchModeListener: (() -> Unit)? = null
 
 	fun initView(
 		onSearchViewClick: () -> Unit,
 		onTextChangedListener: (CustomSearchViewState) -> Unit,
-		onBackPressedListener: () -> Unit,
-		onSearchDisabled: () -> Unit
+		onExitSearchModeListener: () -> Unit
 	) {
+		this.onExitSearchModeListener = onExitSearchModeListener
+
 		searchText.addTextChangedListener {
 			val searchText = searchText.text.toString()
 
@@ -62,9 +63,7 @@ class CustomSearchView : ConstraintLayout {
 		}
 
 		backButton.setOnClickListener {
-			disableSearch()
-			onSearchDisabled()
-			onBackPressedListener()
+			exitSearchMode()
 		}
 
 		disabledSearchLayout.setOnClickListener {
@@ -83,9 +82,9 @@ class CustomSearchView : ConstraintLayout {
 		disabledSearchLayout.hide()
 	}
 
-	private fun disableSearch() {
+	fun exitSearchMode() {
 		enabledSearchLayout.hide()
 		disabledSearchLayout.show()
-		onSearchDisabled?.invoke()
+		onExitSearchModeListener?.invoke()
 	}
 }
