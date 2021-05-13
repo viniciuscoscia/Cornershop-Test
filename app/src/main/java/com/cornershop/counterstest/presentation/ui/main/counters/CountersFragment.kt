@@ -30,7 +30,7 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 	private val viewBinding: FragmentCountersBinding by viewBinding()
 	private var tracker: SelectionTracker<CounterUiModel>? = null
 
-	private var isSearching: Boolean = false
+	private var isSearchMode: Boolean = false
 
 	private val countersAdapter: CountersAdapter by lazy {
 		CountersAdapter(
@@ -57,7 +57,7 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		requireActivity().onBackPressedDispatcher.addCallback(this) {
-			if (isSearching) {
+			if (isSearchMode) {
 				viewBinding.searchView.exitSearchMode()
 			}
 		}
@@ -85,7 +85,11 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 		viewBinding.searchView.show()
 		viewBinding.multiSelectionBar.root.hide()
 
-		viewModel.onDeleteCounter()
+		val searchText = if (isSearchMode)
+			viewBinding.searchView.getSearchText()
+		else null
+
+		viewModel.onDeleteCounter(searchText)
 	}
 
 	private fun setupSearchBar() {
@@ -103,11 +107,11 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 				}
 			},
 			onExitSearchModeListener = {
-				isSearching = false
+				isSearchMode = false
 				hideDarkEffect()
 				viewModel.getCounters(false)
 			}, onSearchViewClick = {
-				isSearching = true
+				isSearchMode = true
 				showDarkEffect()
 			}
 		)
@@ -315,7 +319,7 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 		showCountersLayout(show = false)
 		couldNotLoadCountersLayout.root.hide()
 
-		if (isSearching) {
+		if (isSearchMode) {
 			noResultsText.show()
 			noCountersLayout.root.hide()
 		} else {
@@ -341,7 +345,7 @@ class CountersFragment : Fragment(R.layout.fragment_counters) {
 	}
 
 	private fun showDarkEffect() = with(viewBinding.darkEffectView) {
-		if (visibility != View.VISIBLE) show()
+		if (visibility != View.VISIBLE && isSearchMode) show()
 	}
 
 	private fun hideDarkEffect() = with(viewBinding.darkEffectView) {

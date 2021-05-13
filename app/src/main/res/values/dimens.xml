@@ -35,5 +35,5 @@
     <dimen name="icons_size">18dp</dimen>
     <dimen name="no_results_text_size">20sp</dimen>
     <dimen name="multi_selection_text_size">18sp</dimen>
-    <dimen name="examples_label_text_size">18sp</dimen>
+    <dimen name="examples_label_text_size">21sp</dimen>
 </resources>

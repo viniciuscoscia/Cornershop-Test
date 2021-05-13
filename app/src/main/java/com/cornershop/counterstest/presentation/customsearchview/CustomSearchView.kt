@@ -36,12 +36,13 @@ class CustomSearchView : ConstraintLayout {
 		defStyleRes: Int = 0
 	) : super(context, attrs, defStyleAttr, defStyleRes)
 
-	private val searchText: EditText = findViewById(R.id.search_text)
+	private val searchTextView: EditText = findViewById(R.id.search_text)
 	private val clearTextButton: ImageButton = findViewById(R.id.clear_text_button)
 	private val backButton: ImageButton = findViewById(R.id.back_button)
 	private val enabledSearchLayout: ConstraintLayout = findViewById(R.id.enabled_search_layout)
 	private val disabledSearchLayout: CardView = findViewById(R.id.disabled_search_layout)
 	private var onExitSearchModeListener: (() -> Unit)? = null
+	private var onTextChangedListener: ((CustomSearchViewState) -> Unit)? = null
 
 	fun initView(
 		onSearchViewClick: () -> Unit,
@@ -49,9 +50,10 @@ class CustomSearchView : ConstraintLayout {
 		onExitSearchModeListener: () -> Unit
 	) {
 		this.onExitSearchModeListener = onExitSearchModeListener
+		this.onTextChangedListener = onTextChangedListener
 
-		searchText.addTextChangedListener {
-			val searchText = searchText.text.toString()
+		searchTextView.addTextChangedListener {
+			val searchText = searchTextView.text.toString()
 
 			onTextChangedListener(
 				if (searchText.isNotBlank()) {
@@ -68,12 +70,12 @@ class CustomSearchView : ConstraintLayout {
 
 		disabledSearchLayout.setOnClickListener {
 			enableSearch()
-			searchText.requestFocus()
+			searchTextView.requestFocus()
 			onSearchViewClick()
 		}
 
 		clearTextButton.setOnClickListener {
-			searchText.setText("")
+			searchTextView.setText("")
 		}
 	}
 
@@ -86,5 +88,11 @@ class CustomSearchView : ConstraintLayout {
 		enabledSearchLayout.hide()
 		disabledSearchLayout.show()
 		onExitSearchModeListener?.invoke()
+	}
+
+	fun getSearchText() = searchTextView.text.toString()
+
+	fun requestNewSearch() {
+		onTextChangedListener?.invoke(CustomSearchViewState.Writing(searchTextView.text.toString()))
 	}
 }

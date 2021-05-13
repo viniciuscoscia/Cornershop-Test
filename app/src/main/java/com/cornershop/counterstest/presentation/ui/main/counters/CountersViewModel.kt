@@ -120,7 +120,7 @@ class CountersViewModel(
 		}
 	}
 
-	fun onDeleteCounter() {
+	fun onDeleteCounter(searchText: String? = null) {
 		_countersLiveData.postValue(ViewState.Loading.Normal)
 
 		if (selectedCounterId.isNullOrBlank()) {
@@ -141,6 +141,13 @@ class CountersViewModel(
 						ViewState.Error(CommonErrorEvents.Generic)
 					}
 				}
+
+			if (viewState is ViewState.Success
+				&& searchText.isNullOrBlank().not()
+			) {
+				searchCountersByText(searchText!!)
+				return@launch
+			}
 
 			_countersLiveData.postValue(viewState)
 		}
